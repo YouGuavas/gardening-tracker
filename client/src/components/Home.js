@@ -1,8 +1,9 @@
 export function Home() {
   return (
-    <div>
+    <div className="main">
       Home
-      <a href="/plant">Plant</a>
+      <a href="/plants">Plants</a>
+
     </div>
   )
 }

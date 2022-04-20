@@ -25,7 +25,7 @@ export function Nav(props) {
         {links.map((item, index) => {
             //replace #navs with item
             return (
-              <li key={index}><a className={(active === item) ? 'active' : ''} onClick={toggleActive} href={`#${item}`}>{item}</a></li>
+              <li key={index}><a className={(active === item) ? 'active' : ''} onClick={toggleActive} href={item === 'Home' ? '/' : `/${item}`}>{item}</a></li>
             )
           })}
         </ul>
@@ -41,7 +41,7 @@ export function Nav(props) {
             {links.map((item, index) => {
               //replace #navs with item
               return (
-                <li key={index} onClick={toggleMenu}><a onClick={toggleActive} className={(active === item ? 'active' : '')} href={`#${item}`}>{item}</a></li>
+                <li key={index} onClick={toggleMenu}><a onClick={toggleActive} className={(active === item ? 'active' : '')} href={`/${item}`}>{item}</a></li>
               )
             })}
           </ul>
