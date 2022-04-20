@@ -11,12 +11,12 @@ function App() {
   const [plant, setPlant] = useState(plants[0]);
   return (
     <div className="App">
-      <Nav links={['Home', 'Navs', 'Forms']} classes="my-nav"/>
+      <Nav links={['Home', 'Info', 'Garden']} classes="my-nav"/>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />}/>
           <Route path="/Home" element={<Home />}/>
-
+          <Route path="/Info" element={<Plants plants={plants} setPlant={setPlant}/>} />
           <Route path={`/plant/:plant`} element={<Plant plant={plant} setPlant={setPlant}/>}/>
           <Route path={`/plants`} element={<Plants plants={plants} setPlant={setPlant}/>}/>
 

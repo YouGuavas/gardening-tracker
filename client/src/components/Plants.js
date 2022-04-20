@@ -6,10 +6,12 @@ export function Plants(props) {
     props.setPlant(plant);
   }
   return (
-    <div className="main">
+    <div className="main grid">
+      <ul className="plants">
       {props.plants.map((plant, index) => {
-        return <Link onClick={() => handleClick({name: plant.name, description: plant.description})} to={`/plant/${plant.name}`} key={index}>{plant.name}</Link>
+        return <li><Link onClick={() => handleClick({name: plant.name, description: plant.description})} to={`/plant/${plant.name}`} key={index}>{plant.name}</Link></li>
       })}
+      </ul>
     </div>
   )
 }

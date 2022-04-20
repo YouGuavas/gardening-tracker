@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import '../styles/Nav.scss';
 
 
@@ -6,18 +6,19 @@ export function Nav(props) {
 
   const links = props.links;
 
-  const [active, setActive] = useState('Home');
+  const [active, setActive] = useState('');
 
   const toggleMenu = () => {
     const mobileMenu = document.getElementById('mobile-menu-main');
     const mobileBtn = document.getElementById('mobile-menu-button-main');
-   // mobileMenu.classList.toggle('hidden');
     mobileMenu.classList.toggle('change');
     mobileBtn.classList.toggle('change');
   }
-  const toggleActive = (e) => {
-    setActive(e.target.innerHTML);
-  }
+
+  useEffect(function() {
+    setActive(window.location.pathname);
+    console.log(window.location.pathname);
+  }, [active]);
   return (
       <nav className={`main-nav ${props.classes}`}>
         {/*Standard menu, hides below laptop size*/}
@@ -25,7 +26,7 @@ export function Nav(props) {
         {links.map((item, index) => {
             //replace #navs with item
             return (
-              <li key={index}><a className={(active === item) ? 'active' : ''} onClick={toggleActive} href={item === 'Home' ? '/' : `/${item}`}>{item}</a></li>
+              <li key={index}><a className={(active === `/${item}`) || (active === `/${item.split(' ').join('%20')}`) || ((active === '/') && (item === 'Home')) ? 'active' : ''} href={item === 'Home' ? '/' : `/${item}`}>{item}</a></li>
             )
           })}
         </ul>
@@ -41,7 +42,7 @@ export function Nav(props) {
             {links.map((item, index) => {
               //replace #navs with item
               return (
-                <li key={index} onClick={toggleMenu}><a onClick={toggleActive} className={(active === item ? 'active' : '')} href={`/${item}`}>{item}</a></li>
+                <li key={index} onClick={toggleMenu}><a className={(active === `/${item}`) || (active === `/${item.split(' ').join('%20')}`) || ((active === '/') && (item === 'Home')) ? 'active' : ''} href={`/${item}`}>{item}</a></li>
               )
             })}
           </ul>
