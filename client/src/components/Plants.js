@@ -7,6 +7,7 @@ export function Plants(props) {
   }
   return (
     <div className="main grid">
+      <h1>Info</h1>
       <ul className="plants">
       {props.plants.map((plant, index) => {
         return <li><Link onClick={() => handleClick({name: plant.name, description: plant.description})} to={`/plant/${plant.name}`} key={index}>{plant.name}</Link></li>
