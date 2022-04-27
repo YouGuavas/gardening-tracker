@@ -7,7 +7,10 @@ import {Plants, Plant} from './components/Plants';
 import {Home} from './components/Home';
 
 function App() {
-  const plants = [{name: 'Jalapeno', description: 'Lil green boi'}, {name: 'Habanero', description: 'Lil hot boi'}];
+  const plants = [
+    {name: 'Jalapeno', kind: 'Pepper', description: 'Lil green boi'}, 
+    {name: 'Habanero', kind: 'Pepper', description: 'Lil hot boi'}
+  ];
   const [plant, setPlant] = useState(plants[0]);
   return (
     <div className="App">
@@ -16,8 +19,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />}/>
           <Route path="/Home" element={<Home />}/>
-          <Route path="/Info" element={<Plants plants={plants} setPlant={setPlant}/>} />
-          <Route path={`/plant/:plant`} element={<Plant plant={plant} setPlant={setPlant}/>}/>
+          <Route path="/info" element={<Plants plants={plants} setPlant={setPlant}/>} />
+          <Route path={`/info/:plant`} element={<Plant plant={plant} setPlant={setPlant}/>}/>
           <Route path={`/plants`} element={<Plants plants={plants} setPlant={setPlant}/>}/>
 
         </Routes>

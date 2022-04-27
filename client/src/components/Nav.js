@@ -17,7 +17,6 @@ export function Nav(props) {
 
   useEffect(function() {
     setActive(window.location.pathname);
-    console.log(window.location.pathname);
   }, [active]);
   return (
       <nav className={`main-nav ${props.classes}`}>
