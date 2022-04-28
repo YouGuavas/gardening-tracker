@@ -15,7 +15,6 @@ function App() {
   return (
     <div className="App">
       <Nav links={['Home', 'Info', 'Garden']} classes="my-nav"/>
-      Jeff
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />}/>

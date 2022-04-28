@@ -4,33 +4,46 @@ import { getPlantsByType } from '../utils/api';
 import { useState, useEffect } from 'react';
 
 export function Plants(props) {
-  let plants = [];
+  const [plants, setPlants] = useState([]);
+
+  async function setPlantList() {
+    const plantList = await getPlantsByType("peppers");
+    setPlants(plantList);
+  }
   useEffect(() => {
-    plants = getPlantsByType("peppers");
-  }, [plants[0]])
-  //console.log(plants);
+    setPlantList();
+  }, [plants.length])
   return (
-    <div>
-      {plants}
-      {/*<div className="main grid">
+      <div className="main plant-grid grid long">
       <h1>Info</h1>
       <ul className="plants">
-      {props.plants.map((plant, index) => {
-        return <li><Link onClick={() => props.setPlant(plant)} to={`/info/${plant.name}`} key={index}>{plant.name}</Link></li>
+      {plants.map((plant, index) => {
+        return <li><Link onClick={() => props.setPlant(plant)} to={`/info/${plant.name}`} key={index}><PlantCard name={plant.name} maturity={plant.maturity}/></Link></li>
       })}
       </ul>
-    </div>*/}
     </div>
   )
 }
 
 export function Plant(props) {
+  const plant = props.plant;
   return(
     <div className="main">
-      <h1>{props.plant.name}</h1>
-      <p>Type: {props.plant.kind}</p>
-      <p>{props.plant.description}</p>
+      <h1>{plant.name ? plant.name : "unknown"}</h1>
+      {plant.heat ? <p>Heat: {plant.heat}</p> : null}
+      {plant.maturity ? <p>Time to maturity: {plant.maturity} days</p> : null}
+      {plant.plantcolor ? <p>Plant color: {plant.plantcolor}</p> : null}
+      {plant.podcolor ? <p>Pod color: {plant.podcolor}</p> : null}
 
+    </div>
+  )
+}
+
+function PlantCard(props) {
+  return(
+    <div className="card">
+      <h4>{props.name}</h4> 
+      {props.maturity}
     </div>
   )
 }
