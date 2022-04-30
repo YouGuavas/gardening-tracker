@@ -24,8 +24,10 @@ export function Paginator(props) {
     <div>
       <div className="pill" onClick={() => arrow('left')}>{"<"}</div>
       {
-       counter.map((item) => {
+       counter.map((item, index) => {
+         if (index < props.pagination.top){
          return <div>{item}</div>
+         }
        })
       }
       <div className="pill" onClick={() => arrow('right')}>{">"}</div>
