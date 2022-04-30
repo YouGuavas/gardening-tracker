@@ -6,6 +6,7 @@ import { Paginator } from './Paginator';
 
 export function Plants(props) {
   const [plants, setPlants] = useState([]);
+  const [page, setPage] = useState(1);
 
   async function setPlantList() {
     const plantList = await getPlantsByType("peppers");
@@ -22,7 +23,7 @@ export function Plants(props) {
         return <li><Link onClick={() => props.setPlant(plant)} to={`/info/${plant.name}`} key={index}><PlantCard name={plant.name} maturity={plant.maturity}/></Link></li>
       })}
       </ul>
-      <Paginator plants={plants.length}/>
+      <Paginator plants={plants.length} pagination={{pillsPerPage: 10}} page={{page: page, "setPage": setPage}}/>
     </div>
   )
 }
