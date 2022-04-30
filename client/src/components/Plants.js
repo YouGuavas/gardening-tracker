@@ -2,6 +2,7 @@ import '../styles/Plants.scss';
 import {Link} from 'react-router-dom';
 import { getPlantsByType } from '../utils/api';
 import { useState, useEffect } from 'react';
+import { Paginator } from './Paginator';
 
 export function Plants(props) {
   const [plants, setPlants] = useState([]);
@@ -14,13 +15,14 @@ export function Plants(props) {
     setPlantList();
   }, [plants.length])
   return (
-      <div className="main plant-grid grid long">
+    <div className="main plant-grid grid long">
       <h1>Info</h1>
       <ul className="plants">
       {plants.map((plant, index) => {
         return <li><Link onClick={() => props.setPlant(plant)} to={`/info/${plant.name}`} key={index}><PlantCard name={plant.name} maturity={plant.maturity}/></Link></li>
       })}
       </ul>
+      <Paginator plants={plants.length}/>
     </div>
   )
 }
