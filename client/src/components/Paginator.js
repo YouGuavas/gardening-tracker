@@ -18,6 +18,8 @@ export function Paginator(props) {
     } else {
       if (page.page < props.plants) page.setPage(page.page + 1)
     }
+    //for left arrow, decrease page number as long as page is greater than 1
+    //for right arrow, increase page number as long as page is less than total pages
   }
   loop(props.page.page, props.plants);
   return (
