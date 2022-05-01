@@ -27,7 +27,7 @@ export function Plants(props) {
         }
       })}
       </ul>
-      <Paginator plants={plants.length} pagination={pagination} page={{page: page, "setPage": setPage}}/>
+      <Paginator plants={plants.length} pagination={pagination} page={{page: page, "setPage": setPage, active: 1}}/>
     </div>
   )
 }

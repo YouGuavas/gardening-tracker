@@ -1,11 +1,19 @@
+@import '../utils/variables';
+
 .paginator{
   list-style: none;
   display: flex;
   margin: 0 auto;
   margin-bottom: 1rem;
   padding: 0;
-  .pill {
+  .pill, .pill-active {
     cursor: pointer;
-    margin: 0 0.2rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 2rem;
+    transition: 0.3s;
+    
+  }
+  .pill-active, .pill:hover {
+    background-color: $color-1;
   }
 }
