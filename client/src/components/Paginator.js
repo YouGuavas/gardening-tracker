@@ -21,16 +21,16 @@ export function Paginator(props) {
   }
   loop(props.page.page, props.plants);
   return (
-    <div>
-      <div className="pill" onClick={() => arrow('left')}>{"<"}</div>
+    <ul className="paginator">
+      <li className="pill" onClick={() => arrow('left')}>{"<"}</li>
       {
        counter.map((item, index) => {
          if (index < props.pagination.top){
-         return <div>{item}</div>
+         return <li className="pill">{item}</li>
          }
        })
       }
-      <div className="pill" onClick={() => arrow('right')}>{">"}</div>
-    </div>
+      <li className="pill" onClick={() => arrow('right')}>{">"}</li>
+    </ul>
   )
 }
