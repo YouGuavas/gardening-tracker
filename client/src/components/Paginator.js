@@ -26,7 +26,7 @@ export function Paginator(props) {
       {
        counter.map((item, index) => {
          if (index < props.pagination.top){
-         return <li className={(index === page.active) ? "pill-active" : "pill"}>{item}</li>
+         return <li className={(index+1 === page.page) ? "pill-active" : "pill"} onClick={() => page.setPage(index+1)}>{item}</li>
          }
        })
       }
