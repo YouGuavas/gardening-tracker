@@ -8,8 +8,9 @@ export function Plants(props) {
   const [plants, setPlants] = useState([]);
   const [page, setPage] = useState(1);
   const resultsPerPage = 10;
+  const floor = (page - 1) * resultsPerPage;
+  const ceiling = page * resultsPerPage;
   const [pagination, setPagination] = useState({bottom: page, top: resultsPerPage});
-
   async function setPlantList() {
     const plantList = await getPlantsByType("peppers");
     setPlants(plantList);
@@ -21,7 +22,7 @@ export function Plants(props) {
     <div className="main plant-grid grid long">
       <h1>Info</h1>
       <ul className="plants">
-      {plants.map((plant, index) => {
+      {plants.slice(floor,ceiling).map((plant, index) => {
         if (index < pagination.top){
         return <li><Link onClick={() => props.setPlant(plant)} to={`/info/${plant.name}`} key={index}><PlantCard name={plant.name} maturity={plant.maturity}/></Link></li>
         }
