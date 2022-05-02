@@ -1,15 +1,18 @@
 @import '../utils/_variables.scss';
-
+.plant-grid {
+  position: relative;
+  top: 2rem;
+}
 .plants {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(2, auto);
-  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
   padding: 1rem;
   @media only screen and (max-width:$md-max) {
-    grid-template-columns: repeat(2, auto);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   li {
     margin-bottom: 0.2rem;
@@ -19,10 +22,19 @@
       height: 2.6rem;
       transition: 0.4s;
       border-radius: 0.1rem;
+      @media only screen and (max-width:$md-max) {
+        h4 {
+          font-weight: 500;
+        }
+        p {
+          font-weight: 200;
+        }
+      }
       &:hover {
         background-color: $color-5;
+        color: $color-4;
       }
-      h4 {
+      h4, p {
         margin: 0;
       }
     }

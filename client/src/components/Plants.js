@@ -10,7 +10,7 @@ export function Plants(props) {
   const resultsPerPage = 10;
   const floor = (page - 1) * resultsPerPage;
   const ceiling = page * resultsPerPage;
-  const [pagination, setPagination] = useState({bottom: page, top: resultsPerPage});
+  const [pagination, setPagination] = useState({bottom: page, top: 9, resultsPerPage: resultsPerPage});
   async function setPlantList() {
     const plantList = await getPlantsByType("peppers");
     setPlants(plantList);
@@ -23,7 +23,7 @@ export function Plants(props) {
       <h1>Info</h1>
       <ul className="plants">
       {plants.slice(floor,ceiling).map((plant, index) => {
-        if (index < pagination.top){
+        if (index < resultsPerPage){
         return <li><Link onClick={() => props.setPlant(plant)} to={`/info/${plant.name}`} key={index}><PlantCard name={plant.name} maturity={plant.maturity}/></Link></li>
         }
       })}
@@ -51,7 +51,7 @@ function PlantCard(props) {
   return(
     <div className="card">
       <h4>{props.name}</h4> 
-      {props.maturity}
+      <p>{props.maturity}</p>
     </div>
   )
 }

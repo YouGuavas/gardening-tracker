@@ -11,7 +11,12 @@
     padding: 0.2rem 0.6rem;
     border-radius: 2rem;
     transition: 0.3s;
-    
+    text-align: center;
+    @media only screen and (max-width:$md-max) {
+      padding: 0.2rem 0.4rem;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
   }
   .pill-active, .pill:hover {
     background-color: $color-1;
