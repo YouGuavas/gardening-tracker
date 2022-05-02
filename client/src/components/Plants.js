@@ -24,7 +24,7 @@ export function Plants(props) {
       <ul className="plants">
       {plants.slice(floor,ceiling).map((plant, index) => {
         if (index < resultsPerPage){
-        return <li><Link onClick={() => props.setPlant(plant)} to={`/info/${plant.name}`} key={index}><PlantCard name={plant.name} maturity={plant.maturity}/></Link></li>
+        return <li><Link onClick={() => props.setPlant(plant)} to={`/info/${plant.name}`} key={index}><PlantCard name={plant.name} heat={plant.heat} maturity={plant.maturity}/></Link></li>
         }
       })}
       </ul>
@@ -51,7 +51,7 @@ function PlantCard(props) {
   return(
     <div className="card">
       <h4>{props.name}</h4> 
-      <p>{props.maturity}</p>
+      {(props.heat && props.heat != '",') ? <p>{props.heat}</p> : null}
     </div>
   )
 }
