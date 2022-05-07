@@ -28,6 +28,7 @@ export function Nav(props) {
               <li key={index}><a className={(active === `/${item}`) || (active === `/${item.split(' ').join('%20')}`) || ((active === '/') && (item === 'Home')) ? 'active' : ''} href={item === 'Home' ? '/' : `/${item}`}>{item}</a></li>
             )
           })}
+          {!props.isLoggedIn ? <li><a className={(active === '/register') || (active === '/login') ? 'active' : ''} href="/login">Login</a></li> : null}
         </ul>
         <div className="mobile-grid">
           <button name="Main Nav Mobile Button" onClick={toggleMenu} id="mobile-menu-button-main" className="mobile-menu-button">
@@ -44,6 +45,7 @@ export function Nav(props) {
                 <li key={index} onClick={toggleMenu}><a className={(active === `/${item}`) || (active === `/${item.split(' ').join('%20')}`) || ((active === '/') && (item === 'Home')) ? 'active' : ''} href={`/${item}`}>{item}</a></li>
               )
             })}
+            {!props.isLoggedIn ? <li onClick={toggleMenu}><a className={(active === '/register') || (active === '/login') ? 'active' : ''} href="/login">Login</a></li> : null}
           </ul>
         </div>
       </nav>
