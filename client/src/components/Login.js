@@ -1,4 +1,5 @@
 import React, {useRef, useState, useEffect} from 'react';
+import { registerUser } from '../utils/api';
 
 import '../styles/Login.scss';
 
@@ -63,7 +64,7 @@ export const Login = (props) => {
   }
   const register = (e) => {
     e.preventDefault();
-    console.log(registrationParams.username, registrationParams.email, registrationParams.password)
+    registerUser(registrationParams);
   }
 
   return (

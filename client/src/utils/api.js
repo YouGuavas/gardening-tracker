@@ -7,5 +7,21 @@ const getPlantsByType = (typeOfPlant) => {
       return res.data;
     })
 }
+const registerUser = (user) => {
+  return axios.post(`${api_uri}users/register/`,
+    {
+      username: user.username,
+      email: user.email,
+      password: user.password
+    }
+  )
+  .then((res) => {
+    return res.data;
+  })
+}
 
-export {getPlantsByType};
+const loginUser = () => {
+  return;
+}
+
+export {getPlantsByType, registerUser};
