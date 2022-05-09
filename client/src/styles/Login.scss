@@ -1,0 +1,54 @@
+@import '../utils/_variables.scss';
+
+.form-container {
+  position: relative;
+  padding: 0.6rem;
+
+  form {
+    width: 75%;
+    margin: 0 auto;
+    padding-bottom: 0.6rem;
+    position: relative;
+    h4.form-title {
+      margin: 0;
+    }
+    .container-full {
+      width: 100%;
+      margin-top: 0.4rem;
+
+      input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0.4rem;
+        border-radius: 0.4rem;
+        border: 0;
+        background-color: $color-4;
+        color: $color-1;
+        &:focus {
+          outline: 0.2rem solid $color-1;
+        }
+        &.submit-button {
+          font-weight: 400;
+          text-transform: uppercase;
+          cursor: pointer;
+          transition: 0.3s;
+          margin-top: 0.6rem;
+          &:hover {
+            background-color: $color-5;
+            color: $color-4;
+          }          
+        }
+      }
+      label {
+        width: 100%;
+        text-transform: uppercase;
+        font-weight: 400;
+        letter-spacing: 0.2rem;
+        font-size: 0.8rem;
+        line-height: 1.2rem;
+        display: block;
+        text-align: left;
+      }
+    }
+  }
+}
