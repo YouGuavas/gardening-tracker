@@ -9,6 +9,9 @@
     margin: 0 auto;
     padding-bottom: 0.6rem;
     position: relative;
+    &:nth-child(2) {
+      margin-top: 4rem;
+    }
     h4.form-title {
       margin: 0;
     }
