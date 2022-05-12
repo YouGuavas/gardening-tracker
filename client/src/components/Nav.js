@@ -14,22 +14,26 @@ export function Nav(props) {
     mobileMenu.classList.toggle('change');
     mobileBtn.classList.toggle('change');
   }
+  const logOut = (mobile) => {
+    props.handleLogin(false);
+    if (mobile) toggleMenu();
+  }
 
   useEffect(function() {
-    setActive(window.location.pathname);
+    setActive(window.location.pathname.toLowerCase());
   }, [active]);
   return (
       <nav className={`main-nav ${props.classes}`}>
         {/*Standard menu, hides below laptop size*/}
         <ul className="standard-menu">
         {links.map((item, index) => {
-            //replace #navs with item
+            item=item.toLowerCase();
             return (
-              <li key={index}><a className={(active === `/${item}`) || (active === `/${item.split(' ').join('%20')}`) || ((active === '/') && (item === 'Home')) ? 'active' : ''} href={item === 'Home' ? '/' : `/${item}`}>{item}</a></li>
+              <li key={index}><a className={(active === `/${item}`) || (active === `/${item.split(' ').join('%20')}`) || ((active === '/') && (item === 'home')) ? 'active' : ''} href={item === 'home' ? '/' : `/${item}`}>{item}</a></li>
             )
           })}
           {props.isLoggedIn ? <li><a className={(active === '/user') || (active === '/profile') || (active === '/garden')? 'active' : ''} href="/garden">Garden</a></li> : null}
-          {!props.isLoggedIn ? <li><a className={(active === '/register') || (active === '/login') ? 'active' : ''} href="/login">Login</a></li> : <li onClick={toggleMenu}><a className='' href="/logout">Logout</a></li>}
+          {!props.isLoggedIn ? <li><a className={(active === '/register') || (active === '/login') ? 'active' : ''} href="/login">Login</a></li> : <li onClick={logOut}><a className='' href="/logout">Logout</a></li>}
         </ul>
         <div className="mobile-grid">
           <button name="Main Nav Mobile Button" onClick={toggleMenu} id="mobile-menu-button-main" className="mobile-menu-button">
@@ -41,13 +45,13 @@ export function Nav(props) {
           {/*Mobile menu, hides above tablet size*/}
           <ul id="mobile-menu-main" className="mobile-menu">
             {links.map((item, index) => {
-              //replace #navs with item
+              item = item.toLowerCase();
               return (
-                <li key={index} onClick={toggleMenu}><a className={(active === `/${item}`) || (active === `/${item.split(' ').join('%20')}`) || ((active === '/') && (item === 'Home')) ? 'active' : ''} href={`/${item}`}>{item}</a></li>
+                <li key={index} onClick={toggleMenu}><a className={(active.toLowerCase() === `/${item.toLowerCase()}`) || (active === `/${item.split(' ').join('%20')}`) || ((active === '/') && (item === 'home')) ? 'active' : ''} href={`/${item}`}>{item}</a></li>
               )
             })}
             {props.isLoggedIn ? <li onClick={toggleMenu}><a className={(active === '/user') || (active === '/profile') || (active === '/garden')? 'active' : ''} href="/garden">Garden</a></li> : null}
-            {!props.isLoggedIn ? <li onClick={toggleMenu}><a className={(active === '/register') || (active === '/login') ? 'active' : ''} href="/login">Login</a></li> : <li onClick={toggleMenu}><a className='' href="/logout">Logout</a></li>}
+            {!props.isLoggedIn ? <li onClick={toggleMenu}><a className={(active === '/register') || (active === '/login') ? 'active' : ''} href="/login">Login</a></li> : <li onClick={() => logOut(true)}><a className='' href="/logout">Logout</a></li>}
           </ul>
         </div>
       </nav>

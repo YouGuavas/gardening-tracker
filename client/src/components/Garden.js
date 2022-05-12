@@ -4,9 +4,11 @@ export function Garden(props) {
   const plants = props.plants;
   return (
     <div>
-      {plants.map((item) => {
+      {props.isLoggedIn ? (plants.map((item) => {
         return <div>{`${item.plant}: ${item.count}`}</div>
-      })}
-    </div>
+      })) : 'nope'}
+      
+    </div> 
+  
   )
 }

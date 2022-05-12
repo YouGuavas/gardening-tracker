@@ -43,7 +43,8 @@ router.route('/users/login/').post((req, res) => {
     .toArray((err, result) => {
       if (err) throw err;
       if (result.length > 0) {
-        res.json({truth:true});
+        if (result[0].password === req.body.password) res.json({truth:true});
+        else res.json({truth: false, message: 'Oops, something went wrong.'});
       } else res.json({truth: false, message: 'Invalid username.'});
     })
 
