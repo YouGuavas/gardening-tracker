@@ -1,6 +1,6 @@
 import './styles/App.scss';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 
 import {Nav} from './components/Nav';
 import {Plants, Plant} from './components/Plants';
@@ -12,19 +12,29 @@ function App() {
   const [plant, setPlant] = useState('');
   const [gardenPlants, setGardenPlants] = useState([{plant: 'Jalapeno', count: 5}, {plant: 'Habanero', count: 3}]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userInfo, setUserInfo] = useState({
+    username: 'YouGuavas'
+  })
+  const handleLogin = (status) => {
+    setIsLoggedIn(status);
+    localStorage.setItem('gardeningTrackerLogin', JSON.stringify({'loggedIn': status}));
+  }
+  useEffect(() => {
+    if (localStorage['gardeningTrackerLogin']) setIsLoggedIn(JSON.parse(localStorage['gardeningTrackerLogin']).loggedIn);
+  }, [isLoggedIn])
   return (
     <div className="App">
-      <Nav links={['Home', 'Info', 'Garden']} classes="my-nav" isLoggedIn={isLoggedIn}/>
+      <Nav links={['home', 'info']} classes="my-nav" isLoggedIn={isLoggedIn} userInfo={userInfo} setIsLoggedIn={(e) => setIsLoggedIn(e)}/>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />}/>
-          <Route path="/Home" element={<Home />}/>
+          <Route path="/home" element={<Home />}/>
           <Route path="/info" element={<Plants setPlant={setPlant}/>} />
           <Route path="/info/:plant" element={<Plant plant={plant} setPlant={setPlant}/>}/>
           <Route path="/plants" element={<Plants setPlant={setPlant}/>}/>
           <Route path="/garden" element={<Garden plants={gardenPlants} />} />
-          <Route path="/register" element={isLoggedIn ? <AlreadyLoggedIn /> : <Login />} />
-          <Route path="/login" element={isLoggedIn ? <AlreadyLoggedIn /> : <Login />} />
+          <Route path="/register" element={isLoggedIn ? <AlreadyLoggedIn /> : <Login handleLogin={(e) => handleLogin(e)} />} />
+          <Route path="/login" element={isLoggedIn ? <AlreadyLoggedIn /> : <Login handleLogin={(e) => handleLogin(e)} />} />
         </Routes>
       </BrowserRouter>
     </div>
