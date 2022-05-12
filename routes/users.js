@@ -12,7 +12,7 @@ router.route('/users/register/').post((req, res) => {
   let db_connect = db_tools.getDB('plants');
   let collection = db_connect.collection('users');
     collection
-      .find({username: req.body.username}).collation({locale: 'en', strength: 2})
+      .find({$or: [{username: req.body.username}, {email: req.body.username}]}).collation({locale: 'en', strength: 2})
       .toArray((err, result) => {
         if (err) throw err;
         if (result.length > 0) res.send('You are already registered.')
@@ -39,7 +39,7 @@ router.route('/users/register/').post((req, res) => {
 router.route('/users/login/').post((req, res) => {
   let db_connect = db_tools.getDB('plants');
   const collection = db_connect.collection('users')
-    collection.find({username: req.body.username}).collation({locale: 'en', strength: 2})
+    collection.find({$or: [{username: req.body.username}, {email: req.body.username}]}).collation({locale: 'en', strength: 2})
     .toArray((err, result) => {
       if (err) throw err;
       if (result.length > 0) {

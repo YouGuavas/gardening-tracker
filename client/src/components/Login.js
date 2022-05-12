@@ -84,8 +84,8 @@ export const Login = (props) => {
         {loginSuccess.truth === false ? <h5 className="notification">{loginSuccess.message}</h5> : loginSuccess.truth ? <h5 className="notification">Login successful!</h5> : null}
 
         <div className="container-full">
-          <label htmlFor="username">Username:</label>
-          <input type="text" name="username" placeholder="Username" id="login_username" onChange={(e) => {handleLoginChange(e)}}/>
+          <label htmlFor="username">Username / Email:</label>
+          <input type="text" name="username" placeholder="Username/Email" id="login_username" onChange={(e) => {handleLoginChange(e)}}/>
         </div>
 
         <div className="container-full">
