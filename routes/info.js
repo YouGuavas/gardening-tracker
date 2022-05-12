@@ -17,6 +17,7 @@ router.route('/information/:plant_type').get((req, res) => {
       if (err) throw err;
       res.json(result);
     })
+    
 });
 
 module.exports = router;

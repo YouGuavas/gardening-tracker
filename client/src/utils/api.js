@@ -20,8 +20,16 @@ const registerUser = (user) => {
   })
 }
 
-const loginUser = () => {
-  return;
+const loginUser = (user) => {
+  return axios.post(`${api_uri}users/login/`,
+    {
+      username: user.username,
+      password: user.password
+    }
+  )
+  .then((res) => {
+    return res.data;
+  })
 }
 
-export {getPlantsByType, registerUser};
+export {getPlantsByType, registerUser, loginUser};

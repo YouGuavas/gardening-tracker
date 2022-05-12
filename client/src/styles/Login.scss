@@ -15,6 +15,12 @@
     h4.form-title {
       margin: 0;
     }
+    h5 {
+      margin: 0;
+      &.notification {
+        color: $color-2;
+      }
+    }
     .container-full {
       width: 100%;
       margin-top: 0.4rem;

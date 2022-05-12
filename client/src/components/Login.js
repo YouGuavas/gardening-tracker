@@ -1,5 +1,5 @@
 import React, {useRef, useState, useEffect} from 'react';
-import { registerUser } from '../utils/api';
+import { registerUser, loginUser } from '../utils/api';
 
 import '../styles/Login.scss';
 
@@ -15,6 +15,8 @@ export const Login = (props) => {
     email: '',
     password: ''
   });
+  const [registrationSuccess, setRegistrationSuccess] = useState(null);
+  const [loginSuccess, setLoginSuccess] = useState({truth: null});
 
 
   const handleLoginChange = (e) => {
@@ -57,23 +59,29 @@ export const Login = (props) => {
     }
   }
 
-  const login = (e) => {
+  const login = async (e) => {
     e.preventDefault();
-    console.log(loginParams.username);
-    console.log(loginParams.password);
+    const form = document.getElementById('login-form');
+    const login = await loginUser(loginParams);
+    setLoginSuccess(login);
+    form.reset();
   }
-  const register = (e) => {
+  const register = async (e) => {
     e.preventDefault();
-    registerUser(registrationParams);
+    const form = document.getElementById('registration-form');
+    const registration = await registerUser(registrationParams);
+    setRegistrationSuccess(registration);
+    form.reset();
   }
 
   return (
     <div className="main form-container">
 
 
-      <form name="login" onSubmit={login}>
+      <form name="login" onSubmit={login} id="login-form">
 
         <h4 className="form-title">Log in here:</h4>
+        {loginSuccess.truth === false ? <h5 className="notification">{loginSuccess.message}</h5> : loginSuccess.truth ? <h5 className="notification">Login successful!</h5> : null}
 
         <div className="container-full">
           <label htmlFor="username">Username:</label>
@@ -92,10 +100,10 @@ export const Login = (props) => {
       </form>
 
 
-      <form name="register" onSubmit={register}>
+      <form name="register" onSubmit={register} id="registration-form">
 
         <h4 className="form-title">Not a user? Register here:</h4>
-
+        {registrationSuccess ? <h5>{registrationSuccess}</h5> : null}
         <div className="container-full">
           <label htmlFor="username">Username:</label>
           <input type="text" name="username" placeholder="Username" id="registration_username" onChange={(e) => {handleRegisterChange(e)}}/>
@@ -118,6 +126,15 @@ export const Login = (props) => {
       </form>
 
 
+    </div>
+  )
+}
+
+
+export const AlreadyLoggedIn = (props) => {
+  return (
+    <div>
+      Already Logged in.
     </div>
   )
 }
