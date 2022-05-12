@@ -35,7 +35,7 @@ export function Paginator(props) {
        counter.map((item, index) => {
          if (index < props.pagination.top){
           return (
-          <li className={(page.page <= 5) ? 
+          <li key={index} className={(page.page <= 5) ? 
             //when page below 5, if item == index, make item active
             (index+1 === page.page) ? "pill-active" : "pill" 
             //else
