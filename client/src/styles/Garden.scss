@@ -1,0 +1,50 @@
+@import '../utils/_variables.scss';
+
+
+.card {
+  background-color: $color-4;
+  color: $color-1;
+  padding: 1rem 0;
+  height: 2.6rem;
+  transition: 0.4s;
+  border-radius: 0.1rem;
+  &.flex-card {
+    display: flex;
+    div {
+      margin: 0 auto;
+    }
+    button {
+      margin: 0 auto;
+      background-color: $color-1;
+      color: $color-4;
+      font-weight: 800;
+      font-size: 1.6rem;
+      border: none;
+      cursor: pointer;
+      padding: 1rem;
+      border-radius: 0.2rem;
+      text-align: center;
+    }
+  }
+  @media only screen and (max-width:$md-max) {
+    h4 {
+      font-weight: 500;
+    }
+    p {
+      font-weight: 200;
+    }
+  }
+  &:hover {
+    background-color: $color-5;
+    color: $color-4;
+  }
+  h4, p {
+    margin: 0;
+  }
+  h4 {
+    letter-spacing: 0.1rem;
+  }
+  p {
+    font-weight: 400;
+  }
+}
