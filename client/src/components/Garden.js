@@ -1,4 +1,8 @@
+import {useState} from 'react';
+
 import {Link} from 'react-router-dom';
+
+import { updateCount, testCount } from '../utils/api';
 
 import '../styles/Garden.scss';
 
@@ -19,19 +23,27 @@ export function Garden(props) {
 
 function GardenCard(props) {
   const plant = props.name;
-  let count = props.count;
+
+  const [count, setCount] = useState(props.count);
   const handleMath = (operation) => {
     if (operation === 'plus'){
-      props.plants.map((item) => {
-        if (item.name  === plant) console.log('hi')
-      })
-    } 
+      setCount(count+1);
+    } else {
+      if (count > 0) setCount(count-1);
+    }
   }
   return (
-    <div className="card flex-card">
-      <button onClick={() => handleMath('minus')}>-</button>
-      <div><Link to={`/info/${plant}`}>{plant}: {count}</Link></div>
-      <button onClick={() => handleMath('plus')}>+</button>
+    <div className="garden-card">
+      <button onClick={testCount}>test</button>
+      <div className="flex-card">
+        <button onClick={() => handleMath('minus')}>-</button>
+        <div><Link to={`/info/${plant}`}>{plant}: {count}</Link></div>
+        <button onClick={() => handleMath('plus')}>+</button>
+      </div>
+      <div>
+        <div>Expected Yield Per Plant: <input type="text"/></div>
+        <div>Total Expected Yield: </div>
+      </div>
     </div>
   )
 }

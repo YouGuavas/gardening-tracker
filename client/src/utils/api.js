@@ -32,4 +32,24 @@ const loginUser = (user) => {
   })
 }
 
-export {getPlantsByType, registerUser, loginUser};
+const testCount = () => {
+  return axios.get(`${api_uri}garden_plants/`)
+  .then((res) => {
+    console.log('done');
+  })
+}
+
+const updateCount = (data) => {
+  return axios.post(`${api_uri}garden_plants/`,
+    {
+      username: data.username,
+      plant: data.plant
+    }
+  )
+  .then((res) => {
+    return res.data;
+  })
+
+}
+
+export {getPlantsByType, registerUser, loginUser, updateCount, testCount};
