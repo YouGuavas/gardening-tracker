@@ -20,4 +20,20 @@ router.route('/information/:plant_type').get((req, res) => {
     
 });
 
+router.route('/information/:plant_type/:plant_name').get(async (req, res) => {
+  const regex = /%20/g;
+  const name = req.params.plant_name.replace(regex, ' ');
+  let db_connect = db_tools.getDB('plants');
+  if (db_connect) {
+    let collection = db_connect.collection(req.params.plant_type)
+      try{
+        let result = await collection.findOne({name: name});
+        console.log(result);
+        res.json(result);
+      } catch(error) {
+        res.status(500).send(error);
+      }
+    }
+})
+
 module.exports = router;

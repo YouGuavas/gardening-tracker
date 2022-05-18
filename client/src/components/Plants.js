@@ -1,23 +1,20 @@
 import '../styles/Plants.scss';
 import {Link} from 'react-router-dom';
-import { getPlantsByType } from '../utils/api';
+import { getPlantsByType, getPlantByName } from '../utils/api';
 import { useState, useEffect } from 'react';
 import { Paginator } from './Paginator';
 
 export function Plants(props) {
-  const [plants, setPlants] = useState([]);
+  const plants = props.plants;
   const [page, setPage] = useState(1);
   const resultsPerPage = 10;
   const floor = (page - 1) * resultsPerPage;
   const ceiling = page * resultsPerPage;
   const [pagination, setPagination] = useState({bottom: page, top: 9, resultsPerPage: resultsPerPage});
-  async function setPlantList() {
-    const plantList = await getPlantsByType("peppers");
-    setPlants(plantList);
-  }
+  
   useEffect(() => {
-    setPlantList();
-  }, [plants.length])
+    props.setPlantList();
+  }, [props.plants.length])
   return (
     <div className="main plant-grid grid long">
       <h1>Info</h1>
@@ -34,15 +31,39 @@ export function Plants(props) {
 }
 
 export function Plant(props) {
-  const plant = props.plant;
+  const [plant, setPlant] = useState({name: 'Jalapeno', heat: '700shu', plantcolor: 'red', maturity: '20'});
+  
+  const stuffToCheckFor = [
+    {name: 'heat', message: 'Heat:'}, 
+    {name: 'maturity', message: 'Time to maturity:', optional: 'days'},
+    {name: 'plantcolor', message: 'Plant color:'},
+    {name: 'podcolor', message: 'Pod color:'}
+    ];
+  
+  const fetchPlantByName = async (typeOfPlant, nameOfPlant) => {
+    const localPlant = await setPlant(getPlantByName(typeOfPlant, nameOfPlant));
+    setPlant(localPlant);
+  }
+
+  const renderPlantData = (item, phrase, optional) => {
+    if (plant) {
+      if (plant[item]) return <p>{`${phrase} ${plant[item]} ${optional ? optional : ''}`}</p>
+    }
+  }
+  
+
+  useEffect(() => {
+   //fetchPlantByName('peppers', window.location.pathname.split('/')[2]);
+  }, [typeof plant]);
+  console.log(typeof plant);
   return(
     <div className="main">
-      <h1>{plant.name ? plant.name : "unknown"}</h1>
+      <p onClick={() => fetchPlantByName('peppers', '7 Pot Barrackpore Red')}>test</p>
+      <h1>{plant ? plant.name : "unknown"}</h1>
       {props.isLoggedIn ? <p>Add</p> : null}
-      {plant.heat ? <p>Heat: {plant.heat}</p> : null}
-      {plant.maturity ? <p>Time to maturity: {plant.maturity} days</p> : null}
-      {plant.plantcolor ? <p>Plant color: {plant.plantcolor}</p> : null}
-      {plant.podcolor ? <p>Pod color: {plant.podcolor}</p> : null}
+      {
+      stuffToCheckFor.map((item) =>  renderPlantData(item.name, item.message, item.optional ? item.optional : null))
+      }
 
     </div>
   )

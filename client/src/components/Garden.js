@@ -12,8 +12,9 @@ export function Garden(props) {
   const setPlants = props.plants.setPlants;
 
   useEffect(() => {
-    if (!typeof props.plants.plants) props.plants.fetchGardenData();
+    props.plants.fetchGardenData();
   }, [typeof props.plants.plants])
+
   return (
     <div className="main">
       {(plants) ? Object.keys(plants).map((item) => {
@@ -30,6 +31,7 @@ function GardenCard(props) {
   const plant = props.name;
 
   const [count, setCount] = useState(props.count);
+  const [expectedYield, setExpectedYield] = useState(0);
   const handleMath = (operation) => {
     if (operation === 'plus'){
       setCount(count+1);
@@ -39,15 +41,14 @@ function GardenCard(props) {
   }
   return (
     <div className="garden-card">
-      <button onClick={testCount}>test</button>
       <div className="flex-card">
         <button onClick={() => handleMath('minus')}>-</button>
         <div><Link to={`/info/${plant}`}>{plant}: {count}</Link></div>
         <button onClick={() => handleMath('plus')}>+</button>
       </div>
       <div>
-        <div>Expected Yield Per Plant: <input type="text"/></div>
-        <div>Total Expected Yield: </div>
+        <div>Expected Yield Per Plant: <input type="text" onChange={(e) => setExpectedYield(e.target.value)}/></div>
+        <div>Total Expected Yield: {count * expectedYield}</div>
       </div>
     </div>
   )

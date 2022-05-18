@@ -13,7 +13,6 @@ router.route('/garden_plants').get(async (req, res) => {
     const collection = db_connect.collection('users');
     try {
       let result = await collection.findOne({username: 'YouGuavas'});
-      console.log('hi');
       res.json(result.garden);
     } catch (error) {
       res.status(500).send(error);
