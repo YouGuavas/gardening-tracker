@@ -32,6 +32,14 @@ const loginUser = (user) => {
   })
 }
 
+
+
+const getGardenPlants = () => {
+  return axios.get(`${api_uri}garden_plants/`)
+    .then((res) => {
+      return res.data;
+    })
+}
 const testCount = () => {
   return axios.get(`${api_uri}garden_plants/`)
   .then((res) => {
@@ -52,4 +60,4 @@ const updateCount = (data) => {
 
 }
 
-export {getPlantsByType, registerUser, loginUser, updateCount, testCount};
+export {getPlantsByType, registerUser, loginUser, updateCount, testCount, getGardenPlants};

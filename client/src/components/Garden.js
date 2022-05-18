@@ -11,8 +11,8 @@ export function Garden(props) {
   const setPlants = props.plants.setPlants;
   return (
     <div className="main">
-      {plants.map((item) => {
-        return <GardenCard plants={plants} name={item.plant} count={item.count} />
+      {Object.keys(plants).map((item) => {
+        return <GardenCard plants={plants} name={item} count={plants.item.count} />
       })
       }
       

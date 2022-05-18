@@ -2,6 +2,8 @@ import './styles/App.scss';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import {useState, useEffect} from 'react';
 
+import { getGardenPlants } from './utils/api';
+
 import {Nav} from './components/Nav';
 import {Plants, Plant} from './components/Plants';
 import {Home} from './components/Home';
@@ -9,17 +11,31 @@ import {Garden} from './components/Garden';
 import {Login, AlreadyLoggedIn} from './components/Login';
 
 function App() {
+
   const [plant, setPlant] = useState('');
-  const [gardenPlants, setGardenPlants] = useState([{plant: 'Jalapeno', count: 5}, {plant: 'Habanero', count: 3}]);
+  const [gardenPlants, setGardenPlants] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState();
+
   const handleLogin = (status) => {
     setIsLoggedIn(status);
     console.log(status);
     localStorage.setItem('gardeningTrackerLogin', JSON.stringify({'loggedIn': status}));
   }
+
   useEffect(() => {
     if (localStorage['gardeningTrackerLogin']) setIsLoggedIn(JSON.parse(localStorage['gardeningTrackerLogin']).loggedIn);
   }, [isLoggedIn])
+
+  useEffect(() => {
+    async function fetchGardenData() {
+      if (isLoggedIn) {
+        const localPlants = await getGardenPlants();
+       // setGardenPlants(localPlants);
+      }
+    };
+   // fetchGardenData();
+  }, [gardenPlants])
+  
   return (
     <div className="App">
       <Nav links={['home', 'info']} classes="my-nav" isLoggedIn={isLoggedIn} handleLogin={(e) => handleLogin(e)}/>
