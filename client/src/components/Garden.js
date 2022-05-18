@@ -2,18 +2,23 @@ import {useState} from 'react';
 
 import {Link} from 'react-router-dom';
 
-import { updateCount, testCount } from '../utils/api';
+import { updateCount, testCount, getGardenPlants } from '../utils/api';
+import { useEffect } from 'react';
 
 import '../styles/Garden.scss';
 
 export function Garden(props) {
   const plants = props.plants.plants;
   const setPlants = props.plants.setPlants;
+
+  useEffect(() => {
+    if (!typeof props.plants.plants) props.plants.fetchGardenData();
+  }, [typeof props.plants.plants])
   return (
     <div className="main">
-      {Object.keys(plants).map((item) => {
-        return <GardenCard plants={plants} name={item} count={plants.item.count} />
-      })
+      {(plants) ? Object.keys(plants).map((item) => {
+        return <GardenCard plants={plants} name={item} count={plants[item]} />
+      }) : null
       }
       
     </div> 

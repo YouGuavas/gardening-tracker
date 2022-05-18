@@ -13,7 +13,7 @@ import {Login, AlreadyLoggedIn} from './components/Login';
 function App() {
 
   const [plant, setPlant] = useState('');
-  const [gardenPlants, setGardenPlants] = useState({});
+  const [gardenPlants, setGardenPlants] = useState();
   const [isLoggedIn, setIsLoggedIn] = useState();
 
   const handleLogin = (status) => {
@@ -21,20 +21,17 @@ function App() {
     console.log(status);
     localStorage.setItem('gardeningTrackerLogin', JSON.stringify({'loggedIn': status}));
   }
-
+  const fetchGardenData = async () => {
+    const localPlants = await getGardenPlants();
+    setGardenPlants(localPlants);
+  }
   useEffect(() => {
     if (localStorage['gardeningTrackerLogin']) setIsLoggedIn(JSON.parse(localStorage['gardeningTrackerLogin']).loggedIn);
   }, [isLoggedIn])
 
   useEffect(() => {
-    async function fetchGardenData() {
-      if (isLoggedIn) {
-        const localPlants = await getGardenPlants();
-       // setGardenPlants(localPlants);
-      }
-    };
-   // fetchGardenData();
-  }, [gardenPlants])
+    fetchGardenData();
+  }, [typeof gardenPlants])
   
   return (
     <div className="App">
@@ -47,7 +44,7 @@ function App() {
           <Route path="/info/:plant" element={<Plant plant={plant} isLoggedIn={isLoggedIn} setPlant={setPlant}/>}/>
           <Route path="/plants" element={<Plants setPlant={setPlant} isLoggedIn={isLoggedIn}/>}/>
           <Route path="/garden" element={isLoggedIn ? (
-            <Garden plants={{plants: gardenPlants, setPlants: (p) => setGardenPlants(p)}} setPlant={setPlant} />
+            <Garden plants={{plants: gardenPlants, setPlants: (p) => setGardenPlants(p), fetchGardenData: () => fetchGardenData()}} setPlant={setPlant} />
             ) : (
             <Home />
           )} />  
