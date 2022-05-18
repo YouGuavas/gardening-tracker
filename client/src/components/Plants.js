@@ -24,7 +24,7 @@ export function Plants(props) {
       <ul className="plants">
       {plants.slice(floor,ceiling).map((plant, index) => {
         if (index < resultsPerPage){
-        return <li key={index}><Link onClick={() => props.setPlant(plant)} to={`/info/${plant.name}`}><PlantCard name={plant.name} heat={plant.heat} maturity={plant.maturity}/></Link></li>
+        return <li key={index}><Link onClick={() => props.setPlant(plant)} to={`/info/${plant.name}`}><PlantCard isLoggedIn={props.isLoggedIn} name={plant.name} heat={plant.heat} maturity={plant.maturity}/></Link></li>
         }
       })}
       </ul>
@@ -38,6 +38,7 @@ export function Plant(props) {
   return(
     <div className="main">
       <h1>{plant.name ? plant.name : "unknown"}</h1>
+      {props.isLoggedIn ? <p>Add</p> : null}
       {plant.heat ? <p>Heat: {plant.heat}</p> : null}
       {plant.maturity ? <p>Time to maturity: {plant.maturity} days</p> : null}
       {plant.plantcolor ? <p>Plant color: {plant.plantcolor}</p> : null}
@@ -52,6 +53,7 @@ function PlantCard(props) {
     <div className="card">
       <h4>{props.name}</h4> 
       {(props.heat && props.heat != '",') ? <p>{props.heat}</p> : null}
+      {(props.isLoggedIn) ? <p>Add</p> : null}
     </div>
   )
 }

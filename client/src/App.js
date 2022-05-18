@@ -43,9 +43,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />}/>
           <Route path="/home" element={<Home />}/>
-          <Route path="/info" element={<Plants setPlant={setPlant}/>} />
-          <Route path="/info/:plant" element={<Plant plant={plant} setPlant={setPlant}/>}/>
-          <Route path="/plants" element={<Plants setPlant={setPlant}/>}/>
+          <Route path="/info" element={<Plants setPlant={setPlant} isLoggedIn={isLoggedIn}/>} />
+          <Route path="/info/:plant" element={<Plant plant={plant} isLoggedIn={isLoggedIn} setPlant={setPlant}/>}/>
+          <Route path="/plants" element={<Plants setPlant={setPlant} isLoggedIn={isLoggedIn}/>}/>
           <Route path="/garden" element={isLoggedIn ? (
             <Garden plants={{plants: gardenPlants, setPlants: (p) => setGardenPlants(p)}} setPlant={setPlant} />
             ) : (
