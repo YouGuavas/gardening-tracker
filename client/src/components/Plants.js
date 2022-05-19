@@ -31,7 +31,7 @@ export function Plants(props) {
 }
 
 export function Plant(props) {
-  const [plant, setPlant] = useState({name: 'Jalapeno', heat: '700shu', plantcolor: 'red', maturity: '20'});
+  const plant = props.plant;
   
   const stuffToCheckFor = [
     {name: 'heat', message: 'Heat:'}, 
@@ -40,25 +40,20 @@ export function Plant(props) {
     {name: 'podcolor', message: 'Pod color:'}
     ];
   
-  const fetchPlantByName = async (typeOfPlant, nameOfPlant) => {
-    const localPlant = await setPlant(getPlantByName(typeOfPlant, nameOfPlant));
-    setPlant(localPlant);
-  }
+  
 
   const renderPlantData = (item, phrase, optional) => {
     if (plant) {
-      if (plant[item]) return <p>{`${phrase} ${plant[item]} ${optional ? optional : ''}`}</p>
+      if (plant[item]) if (plant[item] !== '",') return <p>{`${phrase} ${plant[item]} ${optional ? optional : ''}`}</p>
     }
   }
   
 
   useEffect(() => {
-   //fetchPlantByName('peppers', window.location.pathname.split('/')[2]);
-  }, [typeof plant]);
-  console.log(typeof plant);
+    props.setPlant('peppers', window.location.pathname.split('/')[2])
+  }, [typeof props.plant]);
   return(
     <div className="main">
-      <p onClick={() => fetchPlantByName('peppers', '7 Pot Barrackpore Red')}>test</p>
       <h1>{plant ? plant.name : "unknown"}</h1>
       {props.isLoggedIn ? <p>Add</p> : null}
       {

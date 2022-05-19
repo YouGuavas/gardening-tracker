@@ -7,12 +7,6 @@ const getPlantsByType = (typeOfPlant) => {
       return res.data;
     })
 }
-const getPlantByName = (typeOfPlant, nameOfPlant) => {
-  return axios(`${api_uri}information/${typeOfPlant}/${nameOfPlant}`)
-    .then((res) => {
-      return res.data;
-    })
-}
 
 
 const registerUser = (user) => {
@@ -41,9 +35,15 @@ const loginUser = (user) => {
 }
 
 
-
-const getGardenPlants = () => {
-  return axios.get(`${api_uri}garden_plants/`)
+const getPlantByName = (typeOfPlant, nameOfPlant) => {
+  return axios.get(`${api_uri}information/${typeOfPlant}/${nameOfPlant}`)
+    .then((res) => {
+      console.log(res.data);
+      return res.data;
+    })
+}
+const getGardenPlants = (userName) => {
+  return axios.get(`${api_uri}garden_plants/${userName}`)
     .then((res) => {
       return res.data;
     })

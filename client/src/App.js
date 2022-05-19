@@ -2,7 +2,7 @@ import './styles/App.scss';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import {useState, useEffect} from 'react';
 
-import { getGardenPlants, getPlantsByType } from './utils/api';
+import { getGardenPlants, getPlantsByType, getPlantByName } from './utils/api';
 
 import {Nav} from './components/Nav';
 import {Plants, Plant} from './components/Plants';
@@ -12,19 +12,27 @@ import {Login} from './components/Login';
 
 function App() {
 
-  const [plant, setPlant] = useState('');
+  const [plant, setPlant] = useState();
   const [plants, setPlants] = useState([]);
   const [gardenPlants, setGardenPlants] = useState();
   const [isLoggedIn, setIsLoggedIn] = useState();
+  const [userName, setUserName] = useState();
 
-  const handleLogin = (status) => {
+  const handleLogin = (status, user) => {
     setIsLoggedIn(status);
-    localStorage.setItem('gardeningTrackerLogin', JSON.stringify({'loggedIn': status}));
+    setUserName(user);
+    localStorage.setItem('gardeningTrackerLogin', JSON.stringify({'loggedIn': status, 'userName': user}));
   }
   const fetchGardenData = async () => {
-    const localPlants = await getGardenPlants();
+    const localPlants = await getGardenPlants(userName);
     setGardenPlants(localPlants);
+    console.log(localPlants)
   }
+  const fetchPlantByName = async (typeOfPlant, nameOfPlant) => {
+    const localPlant = await getPlantByName(typeOfPlant, nameOfPlant);
+    setPlant(localPlant);
+  }
+
   const setPlantList = async () => {
     const plantList = await getPlantsByType("peppers");
     setPlants(plantList);
@@ -32,7 +40,10 @@ function App() {
 
 
   useEffect(() => {
-    if (localStorage['gardeningTrackerLogin']) setIsLoggedIn(JSON.parse(localStorage['gardeningTrackerLogin']).loggedIn);
+    if (localStorage['gardeningTrackerLogin']) {
+      setIsLoggedIn(JSON.parse(localStorage['gardeningTrackerLogin']).loggedIn);
+      setUserName(JSON.parse(localStorage['gardeningTrackerLogin']).userName);
+    }
   }, [isLoggedIn])
 
   
@@ -44,7 +55,7 @@ function App() {
           <Route path="/" element={<Home />}/>
           <Route path="/home" element={<Home />}/>
           <Route path="/info" element={<Plants plants={plants} setPlantList={setPlantList} setPlant={setPlant} isLoggedIn={isLoggedIn}/>} />
-          <Route path="/info/:plant" element={<Plant plant={plant} isLoggedIn={isLoggedIn} setPlant={setPlant}/>}/>
+          <Route path="/info/:plant" element={<Plant setPlant={fetchPlantByName} plant={plant} isLoggedIn={isLoggedIn}/>}/>
           <Route path="/plants" element={<Plants plants={plants} setPlantList={setPlantList} setPlant={setPlant} isLoggedIn={isLoggedIn}/>}/>
           <Route path="/garden" element={isLoggedIn ? (
             <Garden plants={{plants: gardenPlants, setPlants: (p) => setGardenPlants(p), fetchGardenData: () => fetchGardenData()}} setPlant={setPlant} />
@@ -54,12 +65,12 @@ function App() {
           <Route path="/register" element={isLoggedIn ? (
             <Navigate replace to="/" />
             ) : (
-            <Login handleLogin={(e) => handleLogin(e)} />
+            <Login handleLogin={handleLogin} />
           )} />
           <Route path="/login" element={isLoggedIn ? (
             <Navigate replace to="/" /> 
             ) : (
-            <Login handleLogin={(e) => handleLogin(e)} />
+            <Login handleLogin={handleLogin} />
           )} />
         </Routes>
       </BrowserRouter>

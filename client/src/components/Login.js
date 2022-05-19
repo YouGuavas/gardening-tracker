@@ -64,7 +64,7 @@ export const Login = (props) => {
     const form = document.getElementById('login-form');
     const login = await loginUser(loginParams);
     setLoginSuccess(login);
-    if (login.truth === true) props.handleLogin(true)
+    if (login.truth === true) props.handleLogin(true, loginParams.username)
     form.reset();
   }
   const register = async (e) => {

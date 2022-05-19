@@ -7,12 +7,12 @@ const db_tools = require('../db/connection');
 
 const ObjectId = require("mongodb").ObjectId;
 
-router.route('/garden_plants').get(async (req, res) => {
+router.route('/garden_plants/:username').get(async (req, res) => {
   let db_connect = db_tools.getDB('plants');
   if (db_connect) {
     const collection = db_connect.collection('users');
     try {
-      let result = await collection.findOne({username: 'YouGuavas'});
+      let result = await collection.findOne({username: req.params.username});
       res.json(result.garden);
     } catch (error) {
       res.status(500).send(error);
