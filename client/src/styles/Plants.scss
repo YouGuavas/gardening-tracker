@@ -1,13 +1,17 @@
 @import '../utils/_variables.scss';
 .plant-grid {
   position: relative;
-  top: 2rem;
 }
 .garden-button {
   background-color: $color-1;
+  color: $color-4;
   padding: 0.4rem;
-  border-radius: 0.3rem;
+  border-radius: 0.1rem;
   border: 1px solid $color-1;
+  margin: 0.5rem;
+  transition: 0.3s;
+  font-weight: 600;
+  cursor: pointer;
   &:hover, :active {
     border: 1px solid $color-4;
     border-style: inset;

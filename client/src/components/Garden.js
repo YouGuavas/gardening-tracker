@@ -10,7 +10,7 @@ export function Garden(props) {
   const plants = props.plants;
 
   return (
-    <div className="main">
+    <div className="main garden-grid">
       {(plants) ? Object.keys(plants).map((item) => {
         return <GardenCard userName={props.userName} plants={plants} name={item} count={plants[item]} />
       }) : null
@@ -43,10 +43,10 @@ function GardenCard(props) {
     <div className="garden-card">
       <div className="flex-card">
         <button onClick={() => handleMath('minus')}>-</button>
-        <div><Link to={`/info/${plant}`}>{plant}: {count}</Link></div>
+        <div className="link-container"><Link to={`/info/${plant}`}>{plant}: {count}</Link></div>
         <button onClick={() => handleMath('plus')}>+</button>
       </div>
-      <div>
+      <div className="bottom-portion">
         <div>Expected Yield Per Plant: <input type="text" onChange={(e) => setExpectedYield(e.target.value)}/></div>
         <div>Total Expected Yield: {count * expectedYield}</div>
       </div>

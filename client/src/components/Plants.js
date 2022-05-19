@@ -1,6 +1,6 @@
 import '../styles/Plants.scss';
 import {Link} from 'react-router-dom';
-import { getPlantsByType, getPlantByName } from '../utils/api';
+import { getPlantsByType, getPlantByName, updateCount, getGardenPlants } from '../utils/api';
 import { useState, useEffect } from 'react';
 import { Paginator } from './Paginator';
 
@@ -14,12 +14,17 @@ export function Plants(props) {
   const ceiling = page * resultsPerPage;
   const [pagination, setPagination] = useState({bottom: page, top: 9, resultsPerPage: resultsPerPage});
   
-  const renderGardenButtons = (haveThisPlant) => {
+
+  const handleClick = async (plantName, count) => {
+    await updateCount({username: props.userName, plant: plantName, count: count})
+    await props.fetchGardenData(props.userName);
+  }
+  const renderGardenButtons = (haveThisPlant, plantName) => {
     if (props.isLoggedIn) {
       if (haveThisPlant) {
-        return <button className='garden-button'>Increase</button>
+        return <button onClick={() => handleClick(plantName, props.gardenPlants[plantName]+1)} className='garden-button'>Increase: {props.gardenPlants[plantName]}</button>
       } else {
-        return <button className='garden-button'>Add to Garden</button>
+        return <button onClick={() => handleClick(plantName, 1)} className='garden-button'>Add to Garden</button>
       }
     }
   }
@@ -38,7 +43,7 @@ export function Plants(props) {
           return <li key={index}><Link onClick={() => props.setPlant(plant)} to={`/info/${plant.name}`}>
             <PlantCard name={plant.name} heat={plant.heat} maturity={plant.maturity}/>
             </Link>
-            {renderGardenButtons(haveThisPlant)}
+            {renderGardenButtons(haveThisPlant, plant.name)}
             </li>
         }
       })}
