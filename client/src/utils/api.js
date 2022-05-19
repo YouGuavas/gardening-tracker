@@ -38,7 +38,6 @@ const loginUser = (user) => {
 const getPlantByName = (typeOfPlant, nameOfPlant) => {
   return axios.get(`${api_uri}information/${typeOfPlant}/${nameOfPlant}`)
     .then((res) => {
-      console.log(res.data);
       return res.data;
     })
 }

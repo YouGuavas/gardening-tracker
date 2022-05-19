@@ -57,39 +57,48 @@ export function Plants(props) {
 //**** Plant *****//
 export function Plant(props) {
   const plant = props.plant;
-  //const haveThisPlant = Object.keys(props.gardenPlants).indexOf(plant.name) !== -1;
   const stuffToCheckFor = [
     {name: 'heat', message: 'Heat:'}, 
     {name: 'maturity', message: 'Time to maturity:', optional: 'days'},
     {name: 'plantcolor', message: 'Plant color:'},
     {name: 'podcolor', message: 'Pod color:'}
     ];
-  const renderGardenButtons = (haveThisPlant) => {
+
+
+  const handleClick = async (plantName, count) => {
+    await updateCount({username: props.userName, plant: plantName, count: count})
+    await props.fetchGardenData(props.userName);
+  }
+  const renderGardenButtons = () => {
+    let haveThisPlant = false;
+    if (typeof props.gardenPlants === 'object') haveThisPlant = Object.keys(props.gardenPlants).indexOf(plant.name) !== -1;
     if (props.isLoggedIn) {
       if (haveThisPlant) {
-        return <button className='garden-button'>Increase</button>
+        return <button onClick={() => handleClick(plant.name, props.gardenPlants[plant.name]+1)} className='garden-button'>Increase: {props.gardenPlants[plant.name]}</button>
       } else {
         return <button className='garden-button'>Add to Garden</button>
       }
     }
   }
-  const renderPlantData = (item, phrase, optional) => {
+  const renderPlantData = (item, phrase, key, optional) => {
     if (plant) {
-      if (plant[item]) if (plant[item] !== '",') return <p>{`${phrase} ${plant[item]} ${optional ? optional : ''}`}</p>
+      if (plant[item]) if (plant[item] !== '",') return <p key={key}>{`${phrase} ${plant[item]} ${optional ? optional : ''}`}</p>
     }
   }
   
   useEffect(() => {
-    props.setPlant('peppers', window.location.pathname.split('/')[2])
+      props.setPlant('peppers', window.location.pathname.split('/')[2]);
   }, [typeof props.plant]);
+  
+  useEffect(() => {
+    props.fetchGardenData(props.userName);
+  }, [typeof props.gardenPlants])
   return(
     <div className="main">
       <h1>{plant ? plant.name : "unknown"}</h1>
       {renderGardenButtons()}
-      
-      
       {
-      stuffToCheckFor.map((item) =>  renderPlantData(item.name, item.message, item.optional ? item.optional : null))
+      stuffToCheckFor.map((item, index) =>  renderPlantData(item.name, item.message, index, item.optional ? item.optional : null))
       }
 
     </div>

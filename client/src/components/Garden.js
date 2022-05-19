@@ -11,8 +11,8 @@ export function Garden(props) {
 
   return (
     <div className="main garden-grid">
-      {(plants) ? Object.keys(plants).map((item) => {
-        return <GardenCard userName={props.userName} plants={plants} name={item} count={plants[item]} />
+      {(plants) ? Object.keys(plants).map((item, index) => {
+        return <GardenCard key={index} userName={props.userName} plants={plants} name={item} count={plants[item]} />
       }) : null
       }
       
