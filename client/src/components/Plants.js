@@ -21,8 +21,14 @@ export function Plants(props) {
   }
   const renderGardenButtons = (haveThisPlant, plantName) => {
     if (props.isLoggedIn) {
-      if (haveThisPlant) {
-        return <button onClick={() => handleClick(plantName, props.gardenPlants[plantName]+1)} className='garden-button'>Increase: {props.gardenPlants[plantName]}</button>
+      if (haveThisPlant === true) {
+        return (
+        <div className="flex">
+          <button onClick={() => handleClick(plantName, props.gardenPlants[plantName]-1)} className='garden-button'>-</button>
+          <div>{props.gardenPlants[plantName]}</div>
+          <button onClick={() => handleClick(plantName, props.gardenPlants[plantName]+1)} className="garden-button">+</button>
+        </div>
+        )
       } else {
         return <button onClick={() => handleClick(plantName, 1)} className='garden-button'>Add to Garden</button>
       }
@@ -39,7 +45,12 @@ export function Plants(props) {
       <ul className="plants">
       {plants.slice(floor,ceiling).map((plant, index) => {
         if (index < resultsPerPage) {
-          const haveThisPlant = Object.keys(props.gardenPlants).indexOf(plant.name) !== -1;
+          
+          let haveThisPlant = Object.keys(props.gardenPlants).indexOf(plant.name) !== -1;
+          if (haveThisPlant) if (props.gardenPlants[plant.name] < 1) haveThisPlant = false;
+          //logic for determining whether we have this plant in our garden
+
+
           return <li key={index}><Link onClick={() => props.setPlant(plant)} to={`/info/${plant.name}`}>
             <PlantCard name={plant.name} heat={plant.heat} maturity={plant.maturity}/>
             </Link>
@@ -71,12 +82,22 @@ export function Plant(props) {
   }
   const renderGardenButtons = () => {
     let haveThisPlant = false;
+    
     if (typeof props.gardenPlants === 'object') haveThisPlant = Object.keys(props.gardenPlants).indexOf(plant.name) !== -1;
+    if (haveThisPlant) if (props.gardenPlants[plant.name] < 1) haveThisPlant = false;
+    //logic for determining whether we have this plant in our garden
+
     if (props.isLoggedIn) {
       if (haveThisPlant) {
-        return <button onClick={() => handleClick(plant.name, props.gardenPlants[plant.name]+1)} className='garden-button'>Increase: {props.gardenPlants[plant.name]}</button>
+        return (
+        <div className="flex">
+          <button onClick={() => handleClick(plant.name, props.gardenPlants[plant.name]-1)} className='garden-button'>-</button>
+          <div>{props.gardenPlants[plant.name]}</div>
+          <button onClick={() => handleClick(plant.name, props.gardenPlants[plant.name]+1)} className="garden-button">+</button>
+        </div>
+        )
       } else {
-        return <button className='garden-button'>Add to Garden</button>
+        return <button onClick={() => handleClick(plant.name, 1)} className='garden-button'>Add to Garden</button>
       }
     }
   }

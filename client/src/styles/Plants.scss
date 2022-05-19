@@ -2,6 +2,20 @@
 .plant-grid {
   position: relative;
 }
+.flex {
+  display: flex;
+  margin: 0 auto;
+  height: 2rem;
+  button, div {
+    margin: 0 auto;
+    height: 2rem;
+    line-height: 2rem;
+  }
+  button {
+    height: 2rem;
+    padding: 0 1rem;
+  }
+}
 .garden-button {
   background-color: $color-1;
   color: $color-4;
@@ -34,6 +48,9 @@
   }
   li {
     margin-bottom: 0.2rem;
+    .flex {
+      margin-top: 0.6rem;
+    }
     .card {
       background-color: $color-4;
       padding: 1rem 0;
