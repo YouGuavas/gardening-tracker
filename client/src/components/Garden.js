@@ -2,23 +2,17 @@ import {useState} from 'react';
 
 import {Link} from 'react-router-dom';
 
-import { updateCount, testCount, getGardenPlants } from '../utils/api';
-import { useEffect } from 'react';
+import { updateCount, getGardenPlants } from '../utils/api';
 
 import '../styles/Garden.scss';
 
 export function Garden(props) {
-  const plants = props.plants.plants;
-  const setPlants = props.plants.setPlants;
-
-  useEffect(() => {
-    props.plants.fetchGardenData();
-  }, [typeof props.plants.plants])
+  const plants = props.plants;
 
   return (
     <div className="main">
       {(plants) ? Object.keys(plants).map((item) => {
-        return <GardenCard plants={plants} name={item} count={plants[item]} />
+        return <GardenCard userName={props.userName} plants={plants} name={item} count={plants[item]} />
       }) : null
       }
       
@@ -32,12 +26,18 @@ function GardenCard(props) {
 
   const [count, setCount] = useState(props.count);
   const [expectedYield, setExpectedYield] = useState(0);
-  const handleMath = (operation) => {
+  const handleMath = async (operation) => {
     if (operation === 'plus'){
-      setCount(count+1);
+      await setCount(count+1);
+      updateCount({username: props.userName, plant: plant, count: count+1})
+
     } else {
-      if (count > 0) setCount(count-1);
+      if (count > 0) {
+        await setCount(count-1);
+        updateCount({username: props.userName, plant: plant, count: count-1})
+      }
     }
+
   }
   return (
     <div className="garden-card">

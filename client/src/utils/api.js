@@ -48,18 +48,15 @@ const getGardenPlants = (userName) => {
       return res.data;
     })
 }
-const testCount = () => {
-  return axios.get(`${api_uri}garden_plants/`)
-  .then((res) => {
-    console.log('done');
-  })
-}
 
 const updateCount = (data) => {
   return axios.post(`${api_uri}garden_plants/`,
     {
       username: data.username,
-      plant: data.plant
+      plant: {
+        name: data.plant,
+        count: data.count
+      }
     }
   )
   .then((res) => {
@@ -68,4 +65,4 @@ const updateCount = (data) => {
 
 }
 
-export {getPlantsByType, getPlantByName, registerUser, loginUser, updateCount, testCount, getGardenPlants};
+export {getPlantsByType, getPlantByName, registerUser, loginUser, updateCount, getGardenPlants};

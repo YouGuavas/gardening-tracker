@@ -3,6 +3,20 @@
   position: relative;
   top: 2rem;
 }
+.garden-button {
+  background-color: $color-1;
+  padding: 0.4rem;
+  border-radius: 0.3rem;
+  border: 1px solid $color-1;
+  &:hover, :active {
+    border: 1px solid $color-4;
+    border-style: inset;
+  }
+  &:focus {
+    outline: 0.3rem solid $color-4;
+  }
+
+}
 .plants {
   list-style: none;
   margin: 0;

@@ -4,6 +4,8 @@ import { getPlantsByType, getPlantByName } from '../utils/api';
 import { useState, useEffect } from 'react';
 import { Paginator } from './Paginator';
 
+
+//**** Plants *****//
 export function Plants(props) {
   const plants = props.plants;
   const [page, setPage] = useState(1);
@@ -12,16 +14,32 @@ export function Plants(props) {
   const ceiling = page * resultsPerPage;
   const [pagination, setPagination] = useState({bottom: page, top: 9, resultsPerPage: resultsPerPage});
   
+  const renderGardenButtons = (haveThisPlant) => {
+    if (props.isLoggedIn) {
+      if (haveThisPlant) {
+        return <button className='garden-button'>Increase</button>
+      } else {
+        return <button className='garden-button'>Add to Garden</button>
+      }
+    }
+  }
+
   useEffect(() => {
     props.setPlantList();
   }, [props.plants.length])
+
   return (
     <div className="main plant-grid grid long">
       <h1>Info</h1>
       <ul className="plants">
       {plants.slice(floor,ceiling).map((plant, index) => {
-        if (index < resultsPerPage){
-        return <li key={index}><Link onClick={() => props.setPlant(plant)} to={`/info/${plant.name}`}><PlantCard isLoggedIn={props.isLoggedIn} name={plant.name} heat={plant.heat} maturity={plant.maturity}/></Link></li>
+        if (index < resultsPerPage) {
+          const haveThisPlant = Object.keys(props.gardenPlants).indexOf(plant.name) !== -1;
+          return <li key={index}><Link onClick={() => props.setPlant(plant)} to={`/info/${plant.name}`}>
+            <PlantCard name={plant.name} heat={plant.heat} maturity={plant.maturity}/>
+            </Link>
+            {renderGardenButtons(haveThisPlant)}
+            </li>
         }
       })}
       </ul>
@@ -30,32 +48,41 @@ export function Plants(props) {
   )
 }
 
+
+//**** Plant *****//
 export function Plant(props) {
   const plant = props.plant;
-  
+  //const haveThisPlant = Object.keys(props.gardenPlants).indexOf(plant.name) !== -1;
   const stuffToCheckFor = [
     {name: 'heat', message: 'Heat:'}, 
     {name: 'maturity', message: 'Time to maturity:', optional: 'days'},
     {name: 'plantcolor', message: 'Plant color:'},
     {name: 'podcolor', message: 'Pod color:'}
     ];
-  
-  
-
+  const renderGardenButtons = (haveThisPlant) => {
+    if (props.isLoggedIn) {
+      if (haveThisPlant) {
+        return <button className='garden-button'>Increase</button>
+      } else {
+        return <button className='garden-button'>Add to Garden</button>
+      }
+    }
+  }
   const renderPlantData = (item, phrase, optional) => {
     if (plant) {
       if (plant[item]) if (plant[item] !== '",') return <p>{`${phrase} ${plant[item]} ${optional ? optional : ''}`}</p>
     }
   }
   
-
   useEffect(() => {
     props.setPlant('peppers', window.location.pathname.split('/')[2])
   }, [typeof props.plant]);
   return(
     <div className="main">
       <h1>{plant ? plant.name : "unknown"}</h1>
-      {props.isLoggedIn ? <p>Add</p> : null}
+      {renderGardenButtons()}
+      
+      
       {
       stuffToCheckFor.map((item) =>  renderPlantData(item.name, item.message, item.optional ? item.optional : null))
       }
@@ -64,12 +91,14 @@ export function Plant(props) {
   )
 }
 
+
+
+//**** PlantCard *****//
 function PlantCard(props) {
   return(
     <div className="card">
       <h4>{props.name}</h4> 
       {(props.heat && props.heat != '",') ? <p>{props.heat}</p> : null}
-      {(props.isLoggedIn) ? <p>Add</p> : null}
     </div>
   )
 }

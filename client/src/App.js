@@ -23,10 +23,9 @@ function App() {
     setUserName(user);
     localStorage.setItem('gardeningTrackerLogin', JSON.stringify({'loggedIn': status, 'userName': user}));
   }
-  const fetchGardenData = async () => {
-    const localPlants = await getGardenPlants(userName);
+  const fetchGardenData = async (user) => {
+    const localPlants = await getGardenPlants(user);
     setGardenPlants(localPlants);
-    console.log(localPlants)
   }
   const fetchPlantByName = async (typeOfPlant, nameOfPlant) => {
     const localPlant = await getPlantByName(typeOfPlant, nameOfPlant);
@@ -41,9 +40,11 @@ function App() {
 
   useEffect(() => {
     if (localStorage['gardeningTrackerLogin']) {
-      setIsLoggedIn(JSON.parse(localStorage['gardeningTrackerLogin']).loggedIn);
-      setUserName(JSON.parse(localStorage['gardeningTrackerLogin']).userName);
-    }
+      const loginInfo = JSON.parse(localStorage['gardeningTrackerLogin'])
+      setIsLoggedIn(loginInfo.loggedIn);
+      setUserName(loginInfo.userName);
+      fetchGardenData(loginInfo.userName);
+  }
   }, [isLoggedIn])
 
   
@@ -54,24 +55,28 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />}/>
           <Route path="/home" element={<Home />}/>
-          <Route path="/info" element={<Plants plants={plants} setPlantList={setPlantList} setPlant={setPlant} isLoggedIn={isLoggedIn}/>} />
-          <Route path="/info/:plant" element={<Plant setPlant={fetchPlantByName} plant={plant} isLoggedIn={isLoggedIn}/>}/>
-          <Route path="/plants" element={<Plants plants={plants} setPlantList={setPlantList} setPlant={setPlant} isLoggedIn={isLoggedIn}/>}/>
+          <Route path="/info" element={<Plants plants={plants} gardenPlants={gardenPlants} setPlantList={setPlantList} setPlant={setPlant} isLoggedIn={isLoggedIn}/>} />
+          <Route path="/info/:plant" element={<Plant gardenPlants={gardenPlants} setPlant={fetchPlantByName} plant={plant} isLoggedIn={isLoggedIn}/>}/>
+          <Route path="/plants" element={<Plants plants={plants} gardenPlants={gardenPlants} setPlantList={setPlantList} setPlant={setPlant} isLoggedIn={isLoggedIn}/>}/>
+          
           <Route path="/garden" element={isLoggedIn ? (
-            <Garden plants={{plants: gardenPlants, setPlants: (p) => setGardenPlants(p), fetchGardenData: () => fetchGardenData()}} setPlant={setPlant} />
+            <Garden userName={userName} plants={gardenPlants} />
             ) : (
             <Home />
           )} />  
+
           <Route path="/register" element={isLoggedIn ? (
             <Navigate replace to="/" />
             ) : (
             <Login handleLogin={handleLogin} />
           )} />
+
           <Route path="/login" element={isLoggedIn ? (
             <Navigate replace to="/" /> 
             ) : (
             <Login handleLogin={handleLogin} />
           )} />
+
         </Routes>
       </BrowserRouter>
     </div>
