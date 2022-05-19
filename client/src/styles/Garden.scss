@@ -8,7 +8,7 @@
   height: 100%;
   min-height: 100vh;
   @media only screen and (max-width:$md-max) {
-    grid-template-columns: repeat(1, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.2rem;
   }
 }
@@ -18,8 +18,18 @@
     height: 3rem;
   }
   @media only screen and (max-width:$md-max) {
-    width: 100%;
-
+    width: 80%;
+    height: 80%;
+    font-size: 0.9rem;
+    font-weight: 400;
+    padding: 1rem;
+    margin: 0 auto;
+    .flex-card {
+      height: 50%;
+    }
+    a {
+      font-weight: 600;
+    } 
     h4 {
       font-weight: 500;
     }
@@ -38,9 +48,21 @@
   div {
     margin: 0 auto;
     height: 3rem;
+    .garden-input {
+      background-color: $color-3;
+      color: $color-4;
+      border: none;
+      border-radius: 0.1rem;
+      line-height: 1.25rem;
+      font-weight: 600;
+      width: 2rem;
+    }
     a {
       margin: 0 auto;
       line-height: 3rem;
+      @media only screen and (max-width:$md-max) {
+        line-height: 1.5rem;
+      }
     }
   }
   button {
@@ -56,10 +78,18 @@
     padding: 0 1rem;
     border-radius: 0.2rem;
     text-align: center;
+    @media only screen and (max-width:$md-max) {
+      padding: 0 0.4rem;
+      height: 2rem;
+      line-height: 2rem;
+    }
   }
   &:hover {
     background-color: $color-5;
     color: $color-4;
+    a {
+      color: $color-4;
+    }
   }
   h4, p {
     margin: 0;

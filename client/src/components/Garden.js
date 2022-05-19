@@ -47,7 +47,7 @@ function GardenCard(props) {
         <button onClick={() => handleMath('plus')}>+</button>
       </div>
       <div className="bottom-portion">
-        <div>Expected Yield Per Plant: <input type="text" onChange={(e) => setExpectedYield(e.target.value)}/></div>
+        <div>Expected Yield Per Plant: <input className="garden-input" type="text" onChange={(e) => setExpectedYield(e.target.value)}/></div>
         <div>Total Expected Yield: {count * expectedYield}</div>
       </div>
     </div>
