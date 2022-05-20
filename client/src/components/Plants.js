@@ -45,8 +45,8 @@ export function Plants(props) {
       <ul className="plants">
       {plants.slice(floor,ceiling).map((plant, index) => {
         if (index < resultsPerPage) {
-          
-          let haveThisPlant = Object.keys(props.gardenPlants).indexOf(plant.name) !== -1;
+          let haveThisPlant;
+          if (props.isLoggedIn && props.gardenPlants) haveThisPlant = (Object.keys(props.gardenPlants).indexOf(plant.name) !== -1);
           if (haveThisPlant) if (props.gardenPlants[plant.name] < 1) haveThisPlant = false;
           //logic for determining whether we have this plant in our garden
 
@@ -54,7 +54,7 @@ export function Plants(props) {
           return <li key={index}><Link onClick={() => props.setPlant(plant)} to={`/info/${plant.name}`}>
             <PlantCard name={plant.name} heat={plant.heat} maturity={plant.maturity}/>
             </Link>
-            {renderGardenButtons(haveThisPlant, plant.name)}
+            {props.isLoggedIn ? renderGardenButtons(haveThisPlant, plant.name) : null}
             </li>
         }
       })}
@@ -83,7 +83,7 @@ export function Plant(props) {
   const renderGardenButtons = () => {
     let haveThisPlant = false;
     
-    if (typeof props.gardenPlants === 'object') haveThisPlant = Object.keys(props.gardenPlants).indexOf(plant.name) !== -1;
+    if ((typeof props.gardenPlants === 'object') && props.gardenPlants && plant) haveThisPlant = Object.keys(props.gardenPlants).indexOf(plant.name) !== -1;
     if (haveThisPlant) if (props.gardenPlants[plant.name] < 1) haveThisPlant = false;
     //logic for determining whether we have this plant in our garden
 
