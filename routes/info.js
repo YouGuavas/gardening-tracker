@@ -23,6 +23,7 @@ router.route('/information/:plant_type').get((req, res) => {
 router.route('/information/:plant_type/:plant_name').get(async (req, res) => {
   const regex = /%20/g;
   const name = req.params.plant_name.replace(regex, ' ');
+  //replace url encoding with space
   let db_connect = db_tools.getDB('plants');
   if (db_connect) {
     let collection = db_connect.collection(req.params.plant_type)

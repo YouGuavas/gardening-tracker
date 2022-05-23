@@ -54,13 +54,16 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />}/>
+          
           <Route path="/home" element={<Home />}/>
+          
           <Route path="/info" element={<Plants fetchGardenData={fetchGardenData} userName={userName} plants={plants} gardenPlants={gardenPlants} setPlantList={setPlantList} setPlant={setPlant} isLoggedIn={isLoggedIn}/>} />
           
           <Route path="/info/:plant" element={<Plant fetchGardenData={fetchGardenData} userName={userName} gardenPlants={gardenPlants} setPlant={fetchPlantByName} plant={plant} isLoggedIn={isLoggedIn}/>}/>
           
           <Route path="/plants" element={<Plants fetchGardenData={fetchGardenData} userName={userName} plants={plants} gardenPlants={gardenPlants} setPlantList={setPlantList} setPlant={setPlant} isLoggedIn={isLoggedIn}/>}/>
           
+         
           <Route path="/garden" element={isLoggedIn ? (
             <Garden userName={userName} plants={gardenPlants} />
             ) : (

@@ -2,7 +2,7 @@ import {useState} from 'react';
 
 import {Link} from 'react-router-dom';
 
-import { updateCount, getGardenPlants } from '../utils/api';
+import { updateCount } from '../utils/api';
 
 import '../styles/Garden.scss';
 
@@ -31,11 +31,12 @@ function GardenCard(props) {
     if (operation === 'plus'){
       await setCount(count+1);
       updateCount({username: props.userName, plant: plant, count: count+1})
-
+      //if operation is addition, add one to count
     } else {
       if (count > 0) {
         await setCount(count-1);
         updateCount({username: props.userName, plant: plant, count: count-1})
+        //else, operation must be subtraction, so subtract one from count
       }
     }
 

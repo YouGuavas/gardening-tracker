@@ -3,6 +3,7 @@
 This project was built with [React](), [Node](), [Express](), [Mongodb](), and [Sass]().
 
 ## About
+This project is a gardening tracker website I built. Users should be able to register an account, login, view general information about plants in the database, and, if registered and logged in, add, update, and view information about their gardens. 
 
 ## Setup
 1. git clone https://github.com/YouGuavas/gardening-tracker.git

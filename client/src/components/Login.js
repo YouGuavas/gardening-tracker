@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef, useState} from 'react';
 import { registerUser, loginUser } from '../utils/api';
 
 import '../styles/Login.scss';
@@ -27,11 +27,13 @@ export const Login = (props) => {
         username: value,
         password: loginParams.password
       })
+      //if field being typed in is "username," update state accordingly
     } else {
       setLoginParams({
         username: loginParams.username,
         password: value
       })
+      //else, field being typed in should be "password"
     }
   }
 
@@ -44,18 +46,21 @@ export const Login = (props) => {
         email: registrationParams.email,
         password: registrationParams.password
       })
+    //if field being typed in is "username," update state accordingly
     } else if (name === 'email') {
       setRegistrationParams({
         username: registrationParams.username,
         email: value,
         password: registrationParams.password
       })
+    //else, if field being typed in is "email," update state accordingly
     } else {
       setRegistrationParams({
         username: registrationParams.username,
         email: registrationParams.email,
         password: value
       })
+    //else, field being typed in should be "password"
     }
   }
 
@@ -65,6 +70,7 @@ export const Login = (props) => {
     const login = await loginUser(loginParams);
     setLoginSuccess(login);
     if (login.truth === true) props.handleLogin(true, loginParams.username)
+    //if login process was successful, update app-wide state to reflect that
     form.reset();
   }
   const register = async (e) => {
@@ -72,6 +78,7 @@ export const Login = (props) => {
     const form = document.getElementById('registration-form');
     const registration = await registerUser(registrationParams);
     setRegistrationSuccess(registration);
+    //update component state to reflect registration success/failure
     form.reset();
   }
 
