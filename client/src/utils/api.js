@@ -1,4 +1,4 @@
-const api_uri = 'https://guavas-garden-tracker.herokuapp.com/';
+const api_uri = 'http://localhost:5000/';//'https://guavas-garden-tracker.herokuapp.com/';
 const axios = require('axios');
 
 const getPlantsByType = (typeOfPlant) => {

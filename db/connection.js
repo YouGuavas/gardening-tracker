@@ -1,11 +1,8 @@
 const { MongoClient } = require('mongodb');
 require('dotenv').config();
 
-
-const username = process.env.DB_USER || '';
-const password = process.env.DB_PASSWORD || '';
-const database = 'plants';
-const uri = `mongodb+srv://${username}:${password}@cluster0.rsv0d.mongodb.net/${database}?retryWrites=true&w=majority`;
+const database = process.env.DATABASE || 'plants';
+const uri = process.env.MONGO_URI;
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true
