@@ -10,27 +10,43 @@ const getPlantsByType = (typeOfPlant) => {
 
 
 const registerUser = (user) => {
-  return axios.post(`${api_uri}users/register/`,
-    {
+  const options = {
+    method: "POST",
+    headers: {
+      Accept: 'application/json',
+      "Content-Type": "application/json;charset=UTF-8",
+    },
+    body: JSON.stringify({
       username: user.username,
       email: user.email,
       password: user.password
-    }
-  )
-  .then((res) => {
-    return res.data;
-  })
+    })
+  }
+  return fetch(`${api_uri}users/register`, options)
+    .then(async (res) => {
+      const result = await res.json();
+      return result;//.json()//data;
+    })
 }
 
 const loginUser = (user) => {
-  return axios.post(`${api_uri}users/login/`,
-    {
+  const options = {
+    method: "POST",
+    headers: {
+      Accept: 'application/json',
+      "Content-Type": "application/json;charset=UTF-8",
+    },
+    body: JSON.stringify({
       username: user.username,
       password: user.password
-    }
-  )
-  .then((res) => {
-    return res.data;
+    })
+  }
+
+  return fetch(`${api_uri}users/login/`, options)
+
+  .then(async (res) => {
+    const result = await res.json()
+    return result;
   })
 }
 

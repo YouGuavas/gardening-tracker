@@ -111,7 +111,7 @@ export const Login = (props) => {
       <form name="register" onSubmit={register} id="registration-form">
 
         <h4 className="form-title">Not a user? Register here:</h4>
-        {registrationSuccess ? <h5>{registrationSuccess}</h5> : null}
+        {(typeof registrationSuccess !== 'object') ? <h5>{registrationSuccess}</h5> : null}
         <div className="container-full">
           <label htmlFor="username">Username:</label>
           <input type="text" name="username" placeholder="Username" id="registration_username" onChange={(e) => {handleRegisterChange(e)}}/>
