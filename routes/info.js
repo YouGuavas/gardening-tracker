@@ -5,7 +5,6 @@ const router = express.Router();
 
 const db_tools = require('../db/connection');
 
-const ObjectId = require("mongodb").ObjectId;
 
 
 router.route('/information/:plant_type').get((req, res) => {
