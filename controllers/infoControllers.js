@@ -3,7 +3,7 @@ const asyncHandler = require('express-async-handler');
 const Plant = require('../models/plantModel');
 
 const getInfo = asyncHandler(async (req, res) => {
-  const plants = await Plant.find({});
+  const plants = await Plant.find({}).sort({name: 1});
   if (plants.length <= 0) {
     res.status(400).json('Could not find any plants of this type.')
     throw new Error('Could not find any plants of this type.');

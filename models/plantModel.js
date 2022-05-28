@@ -10,7 +10,6 @@ const plantSchema = mongoose.Schema({
   maturity: String,
   plantcolor: String,
   podcolor: String,
-
 })
 
 module.exports = mongoose.model('Plant', plantSchema, 'peppers');
