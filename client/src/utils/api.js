@@ -1,14 +1,13 @@
 const api_uri = 'http://localhost:5000/';//'https://guavas-garden-tracker.herokuapp.com/';
-const axios = require('axios');
 
 const getPlantsByType = (typeOfPlant) => {
-  return axios(`${api_uri}information/${typeOfPlant}`)
+  return fetch(`${api_uri}information/${typeOfPlant}`)
     .then((res) => {
-      return res.data;
+      return res.json();
     })
 }
 
-
+//--------//
 const registerUser = (user) => {
   const options = {
     method: "POST",
@@ -22,13 +21,13 @@ const registerUser = (user) => {
       password: user.password
     })
   }
+  
   return fetch(`${api_uri}users/register`, options)
-    .then(async (res) => {
-      const result = await res.json();
-      return result;//.json()//data;
+    .then((res) => {
+      return res.json();
     })
 }
-
+//---------//
 const loginUser = (user) => {
   const options = {
     method: "POST",
@@ -43,41 +42,48 @@ const loginUser = (user) => {
   }
 
   return fetch(`${api_uri}users/login/`, options)
-
-  .then(async (res) => {
-    const result = await res.json()
-    return result;
-  })
+    .then((res) => {
+      return res.json();
+    }
+  )
 }
-
-
+//--------//
 const getPlantByName = (typeOfPlant, nameOfPlant) => {
-  return axios.get(`${api_uri}information/${typeOfPlant}/${nameOfPlant}`)
+  return fetch(`${api_uri}information/${typeOfPlant}/${nameOfPlant}`)
     .then((res) => {
-      return res.data;
-    })
+      return res.json();
+    }
+  )
 }
+//--------//
 const getGardenPlants = (userName) => {
-  return axios.get(`${api_uri}garden_plants/${userName}`)
+  return fetch(`${api_uri}garden_plants/${userName}`)
     .then((res) => {
-      return res.data;
-    })
+      return res.json();
+    }
+  )
 }
-
+//--------//
 const updateCount = (data) => {
-  return axios.post(`${api_uri}garden_plants/`,
-    {
+  const options = {
+    method: "POST",
+    headers: {
+      Accept: 'application/json',
+      "Content-Type": "application/json;charset=UTF-8",
+    },
+    body: JSON.stringify({
       username: data.username,
       plant: {
         name: data.plant,
         count: data.count
       }
-    }
-  )
-  .then((res) => {
-    return res.data;
-  })
+    })
+  }
 
+  return fetch(`${api_uri}garden_plants/`, options)
+  .then((res) => {
+    return res.json();
+  })
 }
 
 export {getPlantsByType, getPlantByName, registerUser, loginUser, updateCount, getGardenPlants};
