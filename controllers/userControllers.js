@@ -4,8 +4,6 @@ const bcrypt = require('bcryptjs');
 const asyncHandler = require('express-async-handler');
 const User = require('../models/userModel');
 
-const db_tools = require('../db/connection');
-
 
 const hashPassword = async (password) => {
   const salt = await bcrypt.genSalt(10);

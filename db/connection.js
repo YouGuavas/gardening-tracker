@@ -7,7 +7,10 @@ let _db;
 module.exports = {
   connectToServer: async (cb) => {
     try {
-      const connection = await mongoose.connect(uri);
+      const connection = await mongoose.connect(uri, {  
+        useNewUrlParser: true,  
+        useUnifiedTopology: true
+    })
       _db = connection.connection.db;
       console.log(`MongoDB Connected: ${connection.connection.host}`);
 

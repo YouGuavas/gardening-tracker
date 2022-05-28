@@ -1,31 +1,28 @@
-const db_tools = require('../db/connection');
+const asyncHandler = require('express-async-handler');
+const User = require('../models/userModel');
 
 
-const getGarden = async (req, res) => {
-  let db_connect = db_tools.getDB('plants');
-  if (db_connect) {
-    const collection = db_connect.collection('users');
-    try {
-      let result = await collection.findOne({username: req.params.username});
-      res.json(result.garden);
-    } catch (error) {
-      res.status(500).send(error);
-    }
+const getGarden = asyncHandler(async (req, res) => {
+  const {username} = req.params;
+  
+  const user = await User.findOne({username});
+  if (!user) {
+    res.status(500).json('This user does not exist.');
+    throw new Error('This user does not exist.');
   }
-}
+  res.status(201).json(user.garden);
+})
 
-const updateGarden = async (req, res) => {
-  let db_connect = db_tools.getDB('plants');
-  if (db_connect) {
-    const collection = db_connect.collection('users');
-    try {
-      await collection.findOneAndUpdate({username: req.body.username}, {$set: {[`garden.${req.body.plant.name}`]: req.body.plant.count}});
-      res.send('Updated!')
-    } catch (error) {
-      res.status(500).send(error);
-    }
+const updateGarden = asyncHandler(async (req, res) => {
+  const {username, plant} = req.body;
+
+  const update = await User.findOneAndUpdate({username}, {$set: {[`garden.${plant.name}`]: plant.count}});
+  if (!update) {
+    res.status(500).json('Could not update plant.');
+    throw new Error('Could not update plant.');
   }
-}
+  res.status(201).json('Updated!');
+})
 
 module.exports = {
   getGarden,
