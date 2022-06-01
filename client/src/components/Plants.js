@@ -1,6 +1,6 @@
 import '../styles/Plants.scss';
 import {Link} from 'react-router-dom';
-import { getPlantsByType, getPlantByName, updateCount, getGardenPlants } from '../utils/api';
+import { updateCount } from '../utils/api';
 import { useState, useEffect } from 'react';
 import { Paginator } from './Paginator';
 

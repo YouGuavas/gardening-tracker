@@ -21,7 +21,7 @@ const registerUser = (user) => {
       password: user.password
     })
   }
-  
+
   return fetch(`${api_uri}users/register`, options)
     .then((res) => {
       return res.json();
@@ -42,8 +42,10 @@ const loginUser = (user) => {
   }
 
   return fetch(`${api_uri}users/login/`, options)
-    .then((res) => {
-      return res.json();
+    .then(async (res) => {
+      const result = await res.json()
+      //console.log(result);
+      return result;
     }
   )
 }

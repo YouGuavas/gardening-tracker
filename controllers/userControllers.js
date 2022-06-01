@@ -11,9 +11,12 @@ const hashPassword = async (password) => {
   return hash;
 }
 
-const generateToken = () => {
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: '30d',
+  })
+};
 
-}
 
 const registerUser = asyncHandler(async (req, res) => {
   const {username, email, password} = req.body;
@@ -40,7 +43,8 @@ const registerUser = asyncHandler(async (req, res) => {
       _id: user.id,
       username: user.username,
       email: user.email,
-      garden: user.garden
+      garden: user.garden,
+      token: generateToken(user._id)
     })
   } else {
     res.status(400).json('Invalid user data.');
@@ -52,22 +56,31 @@ const registerUser = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
   const {username, password} = req.body;
   
-  const userExists = await User.find({$or: [{username: username}, 
+  const user = await User.findOne({$or: [{username: username}, 
     {email: username}]}).collation({locale: 'en', strength: 2});
   
     /*user can type email or username to login, so search for any 
       document whose email or username matches the 'username' field*/
-    if (userExists.length <= 0) {
+    if (!user) {
       //if no such username/email exists, let the user know
       res.status(400).json({truth: false, message: 'Invalid email or username.'})
-      throw new Error('Invalid email or username.');
-    }
-    const hashResult = await bcrypt.compare(password, userExists[0].password);
-    if (hashResult === true) res.status(201).json({truth: true});
-    //if user exists and passwords match, log the user in
-    else {
-      res.status(400).json({truth: false, message: 'Oops, something went wrong.'});
-      throw new Error('Something went wrong.');
+      throw new Error('Invalid credentials.');
+    } else {
+
+      const hashResult = await bcrypt.compare(password, user.password);
+      if (hashResult === true) {
+        res.json({
+          _id: user.id,
+          username: user.username,
+          email: user.email,
+          token: generateToken(user._id)
+        });
+      }
+      //if user exists and passwords match, log the user in
+      else {
+        res.status(400).json({truth: false, message: 'Oops, something went wrong.'});
+        throw new Error('Something went wrong.');
+      }
     }
 })
 

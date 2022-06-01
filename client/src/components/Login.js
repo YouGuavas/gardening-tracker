@@ -16,7 +16,6 @@ export const Login = (props) => {
     password: ''
   });
   const [registrationSuccess, setRegistrationSuccess] = useState(null);
-  const [loginSuccess, setLoginSuccess] = useState({truth: null});
 
 
   const handleLoginChange = (e) => {
@@ -68,8 +67,7 @@ export const Login = (props) => {
     e.preventDefault();
     const form = document.getElementById('login-form');
     const login = await loginUser(loginParams);
-    setLoginSuccess(login);
-    if (login.truth === true) props.handleLogin(true, loginParams.username)
+    if (login.username) props.handleLogin(true, login.username)
     //if login process was successful, update app-wide state to reflect that
     form.reset();
   }
@@ -89,7 +87,6 @@ export const Login = (props) => {
       <form name="login" onSubmit={login} id="login-form">
 
         <h4 className="form-title">Log in here:</h4>
-        {loginSuccess.truth === false ? <h5 className="notification">{loginSuccess.message}</h5> : loginSuccess.truth ? <h5 className="notification">Login successful!</h5> : null}
 
         <div className="container-full">
           <label htmlFor="username">Username / Email:</label>
