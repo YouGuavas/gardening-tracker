@@ -62,12 +62,29 @@ export const Login = (props) => {
     //else, field being typed in should be "password"
     }
   }
+  const handleLogin = (data) => {
+    //data ? setIsLoggedIn(true) : setIsLoggedIn(false);
+    //setUserName(data.username);
+
+    if (data) {
+      props.setIsLoggedIn(true);
+      props.setUserName(data.username);
+      localStorage.setItem('gardeningTrackerLogin', 
+      JSON.stringify(data));
+    } else {
+      props.setIsLoggedIn(false);
+      localStorage.removeItem('gardeningTrackerLogin');
+    }
+
+  }
 
   const login = async (e) => {
     e.preventDefault();
     const form = document.getElementById('login-form');
     const login = await loginUser(loginParams);
-    if (login.username) props.handleLogin(true, login.username)
+    if (login) {
+      handleLogin(login)
+    }
     //if login process was successful, update app-wide state to reflect that
     form.reset();
   }
@@ -77,6 +94,7 @@ export const Login = (props) => {
     const registration = await registerUser(registrationParams);
     setRegistrationSuccess(registration);
     //update component state to reflect registration success/failure
+    
     form.reset();
   }
 

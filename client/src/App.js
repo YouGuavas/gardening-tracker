@@ -2,7 +2,7 @@ import './styles/App.scss';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import {useState, useEffect} from 'react';
 
-import { getGardenPlants, getPlantsByType, getPlantByName } from './utils/api';
+import { fetchGardenDatal, getPlantsByType, getPlantByName } from './utils/api';
 
 import {Nav} from './components/Nav';
 import {Plants, Plant} from './components/Plants';
@@ -18,14 +18,8 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState();
   const [userName, setUserName] = useState();
 
-  const handleLogin = (status, user) => {
-    setIsLoggedIn(status);
-    setUserName(user);
-    localStorage.setItem('gardeningTrackerLogin', JSON.stringify({'loggedIn': status, 'userName': user}));
-  }
-  const fetchGardenData = async (user) => {
-    const localPlants = await getGardenPlants(user);
-    setGardenPlants(localPlants);
+  const fetchGardenData = async () => {
+      setGardenPlants(await fetchGardenDatal());
   }
   const fetchPlantByName = async (typeOfPlant, nameOfPlant) => {
     const localPlant = await getPlantByName(typeOfPlant, nameOfPlant);
@@ -41,16 +35,18 @@ function App() {
   useEffect(() => {
     if (localStorage['gardeningTrackerLogin']) {
       const loginInfo = JSON.parse(localStorage['gardeningTrackerLogin'])
-      setIsLoggedIn(loginInfo.loggedIn);
+      setIsLoggedIn(true);
       setUserName(loginInfo.userName);
-      fetchGardenData(loginInfo.userName);
+      fetchGardenDatal();
+  } else {
+    setIsLoggedIn(false);
   }
   }, [isLoggedIn])
 
   
   return (
     <div className="App">
-      <Nav links={['home', 'info']} classes="my-nav" isLoggedIn={isLoggedIn} handleLogin={(e) => handleLogin(e)}/>
+      <Nav links={['home', 'info']} classes="my-nav" isLoggedIn={isLoggedIn}/>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />}/>
@@ -73,13 +69,13 @@ function App() {
           <Route path="/register" element={isLoggedIn ? (
             <Navigate replace to="/" />
             ) : (
-            <Login handleLogin={handleLogin} />
+            <Login isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setUserName={setUserName}/>
           )} />
 
           <Route path="/login" element={isLoggedIn ? (
             <Navigate replace to="/" /> 
             ) : (
-            <Login handleLogin={handleLogin} />
+            <Login isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setUserName={setUserName}/>
           )} />
 
         </Routes>

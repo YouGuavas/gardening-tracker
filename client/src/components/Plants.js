@@ -8,6 +8,7 @@ import { Paginator } from './Paginator';
 //**** Plants *****//
 export function Plants(props) {
   const plants = props.plants;
+  const [isLoggedIn, setIsLoggedIn] = useState();
   const [page, setPage] = useState(1);
   const resultsPerPage = 10;
   const floor = (page - 1) * resultsPerPage;
@@ -20,7 +21,7 @@ export function Plants(props) {
     await props.fetchGardenData(props.userName);
   }
   const renderGardenButtons = (haveThisPlant, plantName) => {
-    if (props.isLoggedIn) {
+    if (isLoggedIn) {
       if (haveThisPlant === true) {
         return (
         <div className="flex">
@@ -39,6 +40,14 @@ export function Plants(props) {
     props.setPlantList();
   }, [props.plants.length])
 
+  useEffect(() => {
+    if (localStorage['gardeningTrackerLogin']) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [isLoggedIn])
+
   return (
     <div className="main plant-grid grid long">
       <h1>Info</h1>
@@ -54,7 +63,7 @@ export function Plants(props) {
           return <li key={index}><Link onClick={() => props.setPlant(plant)} to={`/info/${plant.name}`}>
             <PlantCard name={plant.name} heat={plant.heat} maturity={plant.maturity}/>
             </Link>
-            {props.isLoggedIn ? renderGardenButtons(haveThisPlant, plant.name) : null}
+            {isLoggedIn ? renderGardenButtons(haveThisPlant, plant.name) : null}
             </li>
         }
       })}
@@ -68,6 +77,7 @@ export function Plants(props) {
 //**** Plant *****//
 export function Plant(props) {
   const plant = props.plant;
+  const [isLoggedIn, setIsLoggedIn] = useState();
   const stuffToCheckFor = [
     {name: 'heat', message: 'Heat:'}, 
     {name: 'maturity', message: 'Time to maturity:', optional: 'days'},
@@ -110,6 +120,14 @@ export function Plant(props) {
   useEffect(() => {
       props.setPlant('peppers', window.location.pathname.split('/')[2]);
   }, [typeof props.plant]);
+
+  useEffect(() => {
+    if (localStorage['gardeningTrackerLogin']) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [isLoggedIn])
   
   useEffect(() => {
     props.fetchGardenData(props.userName);

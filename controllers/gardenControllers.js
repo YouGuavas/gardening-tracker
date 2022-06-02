@@ -3,9 +3,9 @@ const User = require('../models/userModel');
 
 
 const getGarden = asyncHandler(async (req, res) => {
-  const {username} = req.params;
+  const {_id} = req.params;
   
-  const user = await User.findOne({username});
+  const user = await User.findById({_id});
   if (!user) {
     res.status(500).json('This user does not exist.');
     throw new Error('This user does not exist.');
@@ -14,7 +14,7 @@ const getGarden = asyncHandler(async (req, res) => {
 })
 
 const updateGarden = asyncHandler(async (req, res) => {
-  const {username, plant} = req.body;
+  const {username, plant, data} = req.body;
 
   const update = await User.findOneAndUpdate({username}, {$set: {[`garden.${plant.name}`]: plant.count}});
   if (!update) {

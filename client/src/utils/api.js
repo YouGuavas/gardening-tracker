@@ -43,9 +43,7 @@ const loginUser = (user) => {
 
   return fetch(`${api_uri}users/login/`, options)
     .then(async (res) => {
-      const result = await res.json()
-      //console.log(result);
-      return result;
+      return await res.json();
     }
   )
 }
@@ -58,13 +56,43 @@ const getPlantByName = (typeOfPlant, nameOfPlant) => {
   )
 }
 //--------//
-const getGardenPlants = (userName) => {
-  return fetch(`${api_uri}garden_plants/${userName}`)
+const getGardenPlants = (data) => {
+  const { _id, username, email, token} = data;
+  const options = {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    }
+  }
+  return fetch(`${api_uri}garden_plants/${_id}`, options)
     .then((res) => {
       return res.json();
     }
   )
 }
+
+const fetchGardenDatal = async () => {
+  if (localStorage['gardeningTrackerLogin']) {
+    const user = JSON.parse(localStorage['gardeningTrackerLogin']);
+    const localPlants = await getGardenPlants(user);
+    return localPlants;
+  }
+}
+//---------//
+const checkAuth = (data) => {
+  const { _id, username, email, token} = data;
+  const options = {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    }
+  }
+  return fetch(`${api_uri}isloggedin`, options)
+    .then((res) => {
+
+    })
+}
+
 //--------//
 const updateCount = (data) => {
   const options = {
@@ -88,4 +116,4 @@ const updateCount = (data) => {
   })
 }
 
-export {getPlantsByType, getPlantByName, registerUser, loginUser, updateCount, getGardenPlants};
+export {fetchGardenDatal, getPlantsByType, getPlantByName, registerUser, loginUser, updateCount, getGardenPlants};

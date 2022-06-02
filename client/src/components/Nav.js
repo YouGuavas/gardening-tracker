@@ -5,6 +5,7 @@ import '../styles/Nav.scss';
 export function Nav(props) {
   const links = props.links;
   const [active, setActive] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState();
 
   
   const toggleMenu = () => {
@@ -31,14 +32,14 @@ export function Nav(props) {
       if ((active === '/register') || (active === '/login')) return <li onClick={(menuType) ? toggleMenu : null}><a className='active' href="/login">Login</a></li>;
       else return <li onClick={(menuType) ? toggleMenu : null}><a href="/login">Login</a></li>
     } else {
-      return <li onClick={() => logOut(true)}><a href="/logout">Logout</a></li>
+      return <li onClick={() => logOut(true)}><a href="/login">Logout</a></li>
     }
 
   }
 
 
   const logOut = (mobile) => {
-    props.handleLogin(false);
+    localStorage.removeItem('gardeningTrackerLogin');
     if (mobile) toggleMenu();
   }
 
@@ -46,6 +47,12 @@ export function Nav(props) {
   useEffect(function() {
     setActive(window.location.pathname.toLowerCase());
   }, [active]);
+
+  /*useEffect(() => {
+    if (localStorage['gardeningTrackerLogin']) {setIsLoggedIn(true);}
+    else { setIsLoggedIn(false) }
+
+  }, [isLoggedIn])*/
 
   return (
       <nav className={`main-nav ${props.classes}`}>

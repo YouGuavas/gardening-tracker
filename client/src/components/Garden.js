@@ -8,6 +8,7 @@ import '../styles/Garden.scss';
 
 export function Garden(props) {
   const plants = props.plants;
+  console.log('plants', props.plants);
 
   return (
     <div className="main garden-grid">

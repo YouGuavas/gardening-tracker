@@ -84,10 +84,14 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 })
 
+const verifyUser = asyncHandler(async () => {
+
+})
 
 module.exports = {
   hashPassword,
   generateToken,
   registerUser,
-  loginUser
+  loginUser, 
+  verifyUser
 }
