@@ -15,10 +15,10 @@ export function Plants(props) {
   const ceiling = page * resultsPerPage;
   const [pagination, setPagination] = useState({bottom: page, top: 9, resultsPerPage: resultsPerPage});
   
-
+  //const token = JSON.parse(localStorage['gardeningTrackerLogin']).token;
   const handleClick = async (plantName, count) => {
-    await updateCount({username: props.userName, plant: plantName, count: count})
-    await props.fetchGardenData(props.userName);
+    await updateCount({plant: plantName, count: count})
+    await props.fetchGardenData();
   }
   const renderGardenButtons = (haveThisPlant, plantName) => {
     if (isLoggedIn) {

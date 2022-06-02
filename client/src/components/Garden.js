@@ -8,13 +8,11 @@ import '../styles/Garden.scss';
 
 export function Garden(props) {
   const plants = props.plants;
-  console.log('plants', props.plants);
-
+  const token = JSON.parse(localStorage['gardeningTrackerLogin']).token;
   return (
     <div className="main garden-grid">
       {(plants) ? Object.keys(plants).sort().map((item, index) => {
-
-        if (plants[item] > 0) return <GardenCard key={index} userName={props.userName} plants={plants} name={item} count={plants[item]} />
+        if (plants[item] > 0) return <GardenCard token={token} key={index} userName={props.userName} plants={plants} name={item} count={plants[item]} />
       }) : null
       }
       
@@ -25,18 +23,19 @@ export function Garden(props) {
 
 function GardenCard(props) {
   const plant = props.name;
-
   const [count, setCount] = useState(props.count);
   const [expectedYield, setExpectedYield] = useState(0);
+  const token = props.token;
+  console.log(token);
   const handleMath = async (operation) => {
     if (operation === 'plus'){
       await setCount(count+1);
-      updateCount({username: props.userName, plant: plant, count: count+1})
+      updateCount({plant: plant, count: count+1, token: token})
       //if operation is addition, add one to count
     } else {
       if (count > 0) {
         await setCount(count-1);
-        updateCount({username: props.userName, plant: plant, count: count-1})
+        updateCount({ plant: plant, count: count-1, token: token})
         //else, operation must be subtraction, so subtract one from count
       }
     }

@@ -57,7 +57,7 @@ const getPlantByName = (typeOfPlant, nameOfPlant) => {
 }
 //--------//
 const getGardenPlants = (data) => {
-  const { _id, username, email, token} = data;
+  const { _id, token} = data;
   const options = {
     method: "GET",
     headers: {
@@ -71,11 +71,10 @@ const getGardenPlants = (data) => {
   )
 }
 
-const fetchGardenDatal = async () => {
+const fetchGardenData = async () => {
   if (localStorage['gardeningTrackerLogin']) {
     const user = JSON.parse(localStorage['gardeningTrackerLogin']);
-    const localPlants = await getGardenPlants(user);
-    return localPlants;
+    return await getGardenPlants(user);
   }
 }
 //---------//
@@ -95,17 +94,21 @@ const checkAuth = (data) => {
 
 //--------//
 const updateCount = (data) => {
+  const { plant, count } = data;
+  const token = JSON.parse(localStorage['gardeningTrackerLogin']).token;
+  const username = JSON.parse(localStorage['gardeningTrackerLogin']).username;
   const options = {
     method: "POST",
     headers: {
       Accept: 'application/json',
       "Content-Type": "application/json;charset=UTF-8",
+      Authorization: `Bearer ${token}`
     },
     body: JSON.stringify({
-      username: data.username,
+      username: username,
       plant: {
-        name: data.plant,
-        count: data.count
+        name: plant,
+        count: count
       }
     })
   }
@@ -116,4 +119,4 @@ const updateCount = (data) => {
   })
 }
 
-export {fetchGardenDatal, getPlantsByType, getPlantByName, registerUser, loginUser, updateCount, getGardenPlants};
+export {fetchGardenData, getPlantsByType, getPlantByName, registerUser, loginUser, updateCount, getGardenPlants};

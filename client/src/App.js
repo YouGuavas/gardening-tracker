@@ -2,7 +2,7 @@ import './styles/App.scss';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import {useState, useEffect} from 'react';
 
-import { fetchGardenDatal, getPlantsByType, getPlantByName } from './utils/api';
+import { fetchGardenData, getPlantsByType, getPlantByName } from './utils/api';
 
 import {Nav} from './components/Nav';
 import {Plants, Plant} from './components/Plants';
@@ -18,9 +18,6 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState();
   const [userName, setUserName] = useState();
 
-  const fetchGardenData = async () => {
-      setGardenPlants(await fetchGardenDatal());
-  }
   const fetchPlantByName = async (typeOfPlant, nameOfPlant) => {
     const localPlant = await getPlantByName(typeOfPlant, nameOfPlant);
     setPlant(localPlant);
@@ -30,14 +27,20 @@ function App() {
     const plantList = await getPlantsByType("peppers");
     setPlants(plantList);
   }
+  const fetchNewGarden = async () => {
+    setGardenPlants(await fetchGardenData())
+  }
 
 
-  useEffect(() => {
+  useEffect( () => {
+    const setMyPlants = async () => {
+      setGardenPlants(await fetchGardenData());
+    }
     if (localStorage['gardeningTrackerLogin']) {
       const loginInfo = JSON.parse(localStorage['gardeningTrackerLogin'])
       setIsLoggedIn(true);
       setUserName(loginInfo.userName);
-      fetchGardenDatal();
+      setMyPlants();
   } else {
     setIsLoggedIn(false);
   }
@@ -53,11 +56,11 @@ function App() {
           
           <Route path="/home" element={<Home />}/>
           
-          <Route path="/info" element={<Plants fetchGardenData={fetchGardenData} userName={userName} plants={plants} gardenPlants={gardenPlants} setPlantList={setPlantList} setPlant={setPlant} isLoggedIn={isLoggedIn}/>} />
+          <Route path="/info" element={<Plants fetchGardenData={fetchNewGarden} setGardenPlants={setGardenPlants} userName={userName} plants={plants} gardenPlants={gardenPlants} setPlantList={setPlantList} setPlant={setPlant} isLoggedIn={isLoggedIn}/>} />
           
-          <Route path="/info/:plant" element={<Plant fetchGardenData={fetchGardenData} userName={userName} gardenPlants={gardenPlants} setPlant={fetchPlantByName} plant={plant} isLoggedIn={isLoggedIn}/>}/>
+          <Route path="/info/:plant" element={<Plant fetchGardenData={fetchNewGarden} setGardenPlants={setGardenPlants} userName={userName} gardenPlants={gardenPlants} setPlant={fetchPlantByName} plant={plant} isLoggedIn={isLoggedIn}/>}/>
           
-          <Route path="/plants" element={<Plants fetchGardenData={fetchGardenData} userName={userName} plants={plants} gardenPlants={gardenPlants} setPlantList={setPlantList} setPlant={setPlant} isLoggedIn={isLoggedIn}/>}/>
+          <Route path="/plants" element={<Plants fetchGardenData={fetchNewGarden} setGardenPlants={setGardenPlants} userName={userName} plants={plants} gardenPlants={gardenPlants} setPlantList={setPlantList} setPlant={setPlant} isLoggedIn={isLoggedIn}/>}/>
           
          
           <Route path="/garden" element={isLoggedIn ? (
