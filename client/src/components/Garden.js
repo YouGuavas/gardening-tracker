@@ -26,7 +26,6 @@ function GardenCard(props) {
   const [count, setCount] = useState(props.count);
   const [expectedYield, setExpectedYield] = useState(0);
   const token = props.token;
-  console.log(token);
   const handleMath = async (operation) => {
     if (operation === 'plus'){
       await setCount(count+1);

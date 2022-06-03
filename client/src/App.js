@@ -2,7 +2,7 @@ import './styles/App.scss';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import {useState, useEffect} from 'react';
 
-import { fetchGardenData, getPlantsByType, getPlantByName } from './utils/api';
+import { fetchGardenData, getPlantsByType, getPlantByName, checkAuth } from './utils/api';
 
 import {Nav} from './components/Nav';
 import {Plants, Plant} from './components/Plants';
@@ -36,9 +36,15 @@ function App() {
     const setMyPlants = async () => {
       setGardenPlants(await fetchGardenData());
     }
+    const setMyAuthedStatus = async () => {
+      const authed = await checkAuth();
+      if (authed) {
+        setIsLoggedIn(authed.truth);
+      }
+    }
     if (localStorage['gardeningTrackerLogin']) {
-      const loginInfo = JSON.parse(localStorage['gardeningTrackerLogin'])
-      setIsLoggedIn(true);
+      const loginInfo = localStorage['gardeningTrackerLogin'];
+      setMyAuthedStatus();
       setUserName(loginInfo.userName);
       setMyPlants();
   } else {

@@ -73,7 +73,7 @@ const loginUser = asyncHandler(async (req, res) => {
           _id: user.id,
           username: user.username,
           email: user.email,
-          token: generateToken(user._id)
+          token: generateToken(user._id),
         });
       }
       //if user exists and passwords match, log the user in
@@ -84,9 +84,26 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 })
 
-const verifyUser = asyncHandler(async () => {
+const verifyUser = (req, res) => {
+  /*const { _id, username } = req.body;
+  let token;
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    try {
+      token = req.headers.authorization.split(' ')[1];
+      console.log(token);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = await User.findById(decoded.id).select('-password');
+      res.json({truth: true});
 
-})
+    } catch(error) {
+      console.log(error);
+      res.status(401);
+      throw new Error('Not authorized');
+    }
+  }
+*/
+  res.json({truth: true});
+}
 
 module.exports = {
   hashPassword,
