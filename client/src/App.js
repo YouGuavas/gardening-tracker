@@ -17,7 +17,7 @@ function App() {
   const [gardenPlants, setGardenPlants] = useState();
   const [isLoggedIn, setIsLoggedIn] = useState();
   const [userName, setUserName] = useState();
-
+  
   const fetchPlantByName = async (typeOfPlant, nameOfPlant) => {
     const localPlant = await getPlantByName(typeOfPlant, nameOfPlant);
     setPlant(localPlant);
