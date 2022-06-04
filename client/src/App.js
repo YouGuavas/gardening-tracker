@@ -1,6 +1,6 @@
 import './styles/App.scss';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useLayoutEffect} from 'react';
 
 import { fetchGardenData, getPlantsByType, getPlantByName, checkAuth } from './utils/api';
 
@@ -17,7 +17,7 @@ function App() {
   const [gardenPlants, setGardenPlants] = useState();
   const [isLoggedIn, setIsLoggedIn] = useState();
   const [userName, setUserName] = useState();
-  
+
   const fetchPlantByName = async (typeOfPlant, nameOfPlant) => {
     const localPlant = await getPlantByName(typeOfPlant, nameOfPlant);
     setPlant(localPlant);
@@ -36,17 +36,21 @@ function App() {
     const setMyPlants = async () => {
       setGardenPlants(await fetchGardenData());
     }
-    const setMyAuthedStatus = async () => {
+    const getMyAuthedStatus = async () => {
       const authed = await checkAuth();
-      if (authed) {
-        setIsLoggedIn(authed.truth);
+      if (authed.truth) {
+        return true;
       }
     }
     if (localStorage['gardeningTrackerLogin']) {
       const loginInfo = localStorage['gardeningTrackerLogin'];
-      setMyAuthedStatus();
+      const authedStatus = getMyAuthedStatus();
       setUserName(loginInfo.userName);
       setMyPlants();
+      if (authedStatus) {
+        setIsLoggedIn(true);
+      }
+      
   } else {
     setIsLoggedIn(false);
   }

@@ -5,7 +5,6 @@ import '../styles/Nav.scss';
 export function Nav(props) {
   const links = props.links;
   const [active, setActive] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState();
 
   
   const toggleMenu = () => {
