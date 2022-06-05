@@ -1,6 +1,6 @@
 import './styles/App.scss';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
-import {useState, useEffect, useLayoutEffect} from 'react';
+import {useState, useEffect} from 'react';
 
 import { fetchGardenData, getPlantsByType, getPlantByName, checkAuth } from './utils/api';
 
@@ -17,6 +17,7 @@ function App() {
   const [gardenPlants, setGardenPlants] = useState();
   const [isLoggedIn, setIsLoggedIn] = useState();
   const [userName, setUserName] = useState();
+  const token = JSON.parse(localStorage['gardeningTrackerLogin']).token;
 
   const fetchPlantByName = async (typeOfPlant, nameOfPlant) => {
     const localPlant = await getPlantByName(typeOfPlant, nameOfPlant);
@@ -31,7 +32,7 @@ function App() {
     setGardenPlants(await fetchGardenData())
   }
 
-
+  //------------//
   useEffect( () => {
     const setMyPlants = async () => {
       setGardenPlants(await fetchGardenData());
@@ -42,6 +43,7 @@ function App() {
         return true;
       }
     }
+
     if (localStorage['gardeningTrackerLogin']) {
       const loginInfo = localStorage['gardeningTrackerLogin'];
       const authedStatus = getMyAuthedStatus();
@@ -55,7 +57,7 @@ function App() {
     setIsLoggedIn(false);
   }
   }, [isLoggedIn])
-
+  //-------------//
   
   return (
     <div className="App">
@@ -74,7 +76,7 @@ function App() {
           
          
           <Route path="/garden" element={isLoggedIn ? (
-            <Garden userName={userName} plants={gardenPlants} />
+            <Garden userName={userName} plants={gardenPlants} token={token} />
             ) : (
             <Home />
           )} />  

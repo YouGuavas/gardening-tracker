@@ -8,20 +8,19 @@ import { Paginator } from './Paginator';
 //**** Plants *****//
 export function Plants(props) {
   const plants = props.plants;
-  const [isLoggedIn, setIsLoggedIn] = useState();
   const [page, setPage] = useState(1);
   const resultsPerPage = 10;
   const floor = (page - 1) * resultsPerPage;
   const ceiling = page * resultsPerPage;
   const [pagination, setPagination] = useState({bottom: page, top: 9, resultsPerPage: resultsPerPage});
   
-  //const token = JSON.parse(localStorage['gardeningTrackerLogin']).token;
   const handleClick = async (plantName, count) => {
     await updateCount({plant: plantName, count: count})
     await props.fetchGardenData();
   }
+  //--------//
   const renderGardenButtons = (haveThisPlant, plantName) => {
-    if (isLoggedIn) {
+    if (props.isLoggedIn) {
       if (haveThisPlant === true) {
         return (
         <div className="flex">
@@ -35,38 +34,32 @@ export function Plants(props) {
       }
     }
   }
+  //-------//
+  const renderPlants = (plant, index) => {
+    if (index < resultsPerPage) {
+      let haveThisPlant;
+      if (props.isLoggedIn && props.gardenPlants) haveThisPlant = (Object.keys(props.gardenPlants).indexOf(plant.name) !== -1);
+      if (haveThisPlant) if (props.gardenPlants[plant.name] < 1) haveThisPlant = false;
+      //logic for determining whether we have this plant in our garden
 
+
+      return (<li key={index}><Link onClick={() => props.setPlant(plant)} to={`/info/${plant.name}`}>
+        <PlantCard name={plant.name} heat={plant.heat} maturity={plant.maturity}/>
+        </Link>
+        {props.isLoggedIn ? renderGardenButtons(haveThisPlant, plant.name) : null}
+        </li>)
+    }
+  }
+  //-------//
   useEffect(() => {
     props.setPlantList();
   }, [props.plants.length])
-
-  useEffect(() => {
-    if (localStorage['gardeningTrackerLogin']) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }, [isLoggedIn])
 
   return (
     <div className="main plant-grid grid long">
       <h1>Info</h1>
       <ul className="plants">
-      {plants.slice(floor,ceiling).map((plant, index) => {
-        if (index < resultsPerPage) {
-          let haveThisPlant;
-          if (props.isLoggedIn && props.gardenPlants) haveThisPlant = (Object.keys(props.gardenPlants).indexOf(plant.name) !== -1);
-          if (haveThisPlant) if (props.gardenPlants[plant.name] < 1) haveThisPlant = false;
-          //logic for determining whether we have this plant in our garden
-
-
-          return <li key={index}><Link onClick={() => props.setPlant(plant)} to={`/info/${plant.name}`}>
-            <PlantCard name={plant.name} heat={plant.heat} maturity={plant.maturity}/>
-            </Link>
-            {isLoggedIn ? renderGardenButtons(haveThisPlant, plant.name) : null}
-            </li>
-        }
-      })}
+      {plants.slice(floor,ceiling).map((plant, index) => renderPlants(plant, index))}
       </ul>
       <Paginator plants={plants.length} pagination={pagination} page={{"page": page, "setPage": setPage}}/>
     </div>

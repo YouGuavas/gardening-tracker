@@ -7,12 +7,14 @@ export function Paginator(props) {
   const page = props.page;
   const ceiling = Math.ceil(props.plants/props.pagination.resultsPerPage);
   const halfOfPills = Math.floor(props.pagination.top/2);
+  //-----//
   const loop = (count, ceiling) => {
     if(count <= ceiling) {
       counter.push(count);
       loop(count+1, ceiling);
     } 
   }
+  //----//
   const arrow = (direction) => {
     if (direction === 'left') {
       if (page.page > 1) page.setPage(page.page - 1)
@@ -25,32 +27,52 @@ export function Paginator(props) {
     //for left arrow, decrease page number as long as page is greater than 1
     //for right arrow, increase page number as long as page is less than total pages
   }
+  //----//
+  const renderArrows = (direction) => {
+    if (direction === 'left') {
+      if (page.page > 1) {
+        return <li className="pill" onClick={() => arrow(direction)}>{"<"}</li>
+      }
+    }
+    if (direction === 'right') {
+      if (page.page < ceiling) {
+        return <li className="pill" onClick={() => arrow(direction)}>{">"}</li>
+      }
+    }
+  }
+  //------//
+  const determineClassNames = (index) => {
+    if (page.page <=5) {
+      if (index+1 === page.page) return 'pill-active'
+      else return 'pill'
+    } else 
+    if (page.page >= ceiling - halfOfPills) {
+      if (index+1  === props.pagination.top - (ceiling - page.page)) return 'pill-active'
+      else return 'pill'
+    } else 
+    if (index === 4) {
+      return 'pill-active'
+    } else return 'pill';
+  }
+  //------//
+  const renderPlants = (item, index) => {
+    if (index < props.pagination.top){
+     return (
+     <li key={index} className={determineClassNames(index)} onClick={() => page.setPage(item)}>
+       {item}
+     </li>)
+    }
+  }
+  //-----//
   if (page.page <= halfOfPills+1) loop(1, ceiling)
   if(page.page >= ceiling-halfOfPills) loop(ceiling-props.pagination.top+1, ceiling)
   else loop(page.page-halfOfPills, ceiling)
+  
   return (
     <ul className="paginator">
-      {(page.page > 1) ? <li className="pill" onClick={() => arrow('left')}>{"<"}</li> : null}
-      {
-       counter.map((item, index) => {
-         if (index < props.pagination.top){
-          return (
-          <li key={index} className={(page.page <= 5) ? 
-            //when page below 5, if item == index, make item active
-            (index+1 === page.page) ? "pill-active" : "pill" 
-            //else
-            : (page.page >= ceiling - halfOfPills) ? 
-            //when page is nearer than half toward ceiling, maintain pill length
-            (index+1 === props.pagination.top - (ceiling - page.page)) ? "pill-active" : "pill" 
-            //else
-            //all other cases, make middle pill active
-            : (index === 4) ? "pill-active" : "pill"} onClick={() => page.setPage(item)}>
-            {item}
-          </li>)
-         }
-       })
-      }
-      {(page.page < ceiling) ? <li className="pill" onClick={() => arrow('right')}>{">"}</li> : null}
+      {renderArrows('left')}
+      {counter.map((item, index) => renderPlants(item, index))}
+      {renderArrows('right')}
     </ul>
   )
 }

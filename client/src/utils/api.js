@@ -1,10 +1,9 @@
 const api_uri = 'https://guavas-garden-tracker.herokuapp.com/';
-
+//---------//
 const getPlantsByType = async (typeOfPlant) => {
   const res = await fetch(`${api_uri}information/${typeOfPlant}`);
   return await res.json();
 }
-
 //--------//
 const registerUser = async (user) => {
   const options = {
@@ -59,7 +58,7 @@ const getGardenPlants = async (data) => {
   const res = await fetch(`${api_uri}garden_plants/${_id}`, options);
   return await res.json();
 }
-
+//-------//
 const fetchGardenData = async () => {
   if (localStorage['gardeningTrackerLogin']) {
     const user = JSON.parse(localStorage['gardeningTrackerLogin']);
@@ -79,7 +78,6 @@ const checkAuth = async () => {
     const res = await fetch(`${api_uri}users/isloggedin/`, options);
     return await res.json();
 }
-
 //--------//
 const updateCount = async (data) => {
   const { plant, count } = data;
@@ -100,9 +98,8 @@ const updateCount = async (data) => {
       }
     })
   }
-
   const res = await fetch(`${api_uri}garden_plants/`, options);
   return await res.json();
 }
-
+//--------//
 export {checkAuth, fetchGardenData, getPlantsByType, getPlantByName, registerUser, loginUser, updateCount, getGardenPlants};

@@ -8,14 +8,18 @@ import '../styles/Garden.scss';
 
 export function Garden(props) {
   const plants = props.plants;
-  const token = JSON.parse(localStorage['gardeningTrackerLogin']).token;
+  //------//
+  const renderPlants = () => {
+    if (plants) {
+      return Object.keys(plants).sort().map((item, index) => {
+        if (plants[item] > 0) return <GardenCard token={props.token} key={index} userName={props.userName} plants={plants} name={item} count={plants[item]} />
+      })
+    }
+  }
+  //------//
   return (
     <div className="main garden-grid">
-      {(plants) ? Object.keys(plants).sort().map((item, index) => {
-        if (plants[item] > 0) return <GardenCard token={token} key={index} userName={props.userName} plants={plants} name={item} count={plants[item]} />
-      }) : null
-      }
-      
+      {renderPlants()}
     </div> 
   
   )

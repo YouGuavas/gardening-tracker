@@ -17,7 +17,7 @@ export const Login = (props) => {
   });
   const [registrationSuccess, setRegistrationSuccess] = useState(null);
 
-
+  //-----//
   const handleLoginChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -35,7 +35,7 @@ export const Login = (props) => {
       //else, field being typed in should be "password"
     }
   }
-
+  //-------//
   const handleRegisterChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -62,10 +62,8 @@ export const Login = (props) => {
     //else, field being typed in should be "password"
     }
   }
+  //-------//
   const handleLogin = (data) => {
-    //data ? setIsLoggedIn(true) : setIsLoggedIn(false);
-    //setUserName(data.username);
-
     if (data) {
       props.setIsLoggedIn(true);
       props.setUserName(data.username);
@@ -77,7 +75,7 @@ export const Login = (props) => {
     }
 
   }
-
+  //-------//
   const login = async (e) => {
     e.preventDefault();
     const form = document.getElementById('login-form');
@@ -88,19 +86,18 @@ export const Login = (props) => {
     //if login process was successful, update app-wide state to reflect that
     form.reset();
   }
+  //-------//
   const register = async (e) => {
     e.preventDefault();
     const form = document.getElementById('registration-form');
     const registration = await registerUser(registrationParams);
     setRegistrationSuccess(registration);
     //update component state to reflect registration success/failure
-    
     form.reset();
   }
-
+  //-------//
   return (
     <div className="main form-container">
-
 
       <form name="login" onSubmit={login} id="login-form">
 
@@ -126,6 +123,7 @@ export const Login = (props) => {
       <form name="register" onSubmit={register} id="registration-form">
 
         <h4 className="form-title">Not a user? Register here:</h4>
+        
         {(typeof registrationSuccess !== 'object') ? <h5>{registrationSuccess}</h5> : null}
         <div className="container-full">
           <label htmlFor="username">Username:</label>
@@ -149,14 +147,6 @@ export const Login = (props) => {
       </form>
 
 
-    </div>
-  )
-}
-
-export const AlreadyLoggedIn = (props) => {
-  return (
-    <div>
-      Already Logged in.
     </div>
   )
 }

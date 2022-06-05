@@ -47,12 +47,6 @@ export function Nav(props) {
     setActive(window.location.pathname.toLowerCase());
   }, [active]);
 
-  /*useEffect(() => {
-    if (localStorage['gardeningTrackerLogin']) {setIsLoggedIn(true);}
-    else { setIsLoggedIn(false) }
-
-  }, [isLoggedIn])*/
-
   return (
       <nav className={`main-nav ${props.classes}`}>
         

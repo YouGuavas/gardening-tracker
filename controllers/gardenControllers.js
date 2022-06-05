@@ -14,7 +14,7 @@ const getGarden = asyncHandler(async (req, res) => {
 })
 
 const updateGarden = asyncHandler(async (req, res) => {
-  const {username, plant, data} = req.body;
+  const {username, plant} = req.body;
   const update = await User.findOneAndUpdate({username}, {$set: {[`garden.${plant.name}`]: plant.count}});
   if (!update) {
     res.status(500).json('Could not update plant.');
