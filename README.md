@@ -8,9 +8,9 @@ This project is a gardening tracker website I built. Users should be able to reg
 ## Setup
 1. git clone https://github.com/YouGuavas/gardening-tracker.git
 2. cd gardening-tracker
-3. npm i
+3. npm i 
 4. npm run dev
 5. cd client 
-6. npm i
+6. npm i (You may need to update api_uri variable in /client/utils/api.js to http://localhost:5000)
 7. npm run start
 
